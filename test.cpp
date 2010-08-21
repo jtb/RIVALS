@@ -5,6 +5,7 @@
 #include "file_utils.h"
 //#include "utils.h"
 #include "bedfile.h"
+#include "cache.h"
 
 using namespace std;
 using namespace rivals;
@@ -20,6 +21,22 @@ int main(){
 
   BEDfile bed("test_sorted.bed");
   rivalWriter(bed, "awesome_sample");
+
+  string version;
+  off_t offset;
+  Capacity num_elements;
+  if(readHeader("awesome_sample", version, offset, num_elements)){
+    cout << version << "\t" << offset << "\t" << num_elements << endl;
+  }
+  ForwardCache<Interval> fvector(fileFromSample("awesome_sample"));
+  fvector.setRange(offset, 1, 11);
+  Interval intv;
+  for(Capacity i = 0; i < fvector.size(); i++){
+    intv = fvector.at(i);
+    intv.printInterval();
+  }
+
+   //indexNodes(offset, "awesome_sample");
 
   /**
   string bedfile = "test_sorted.bed";

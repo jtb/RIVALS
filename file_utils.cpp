@@ -54,6 +54,33 @@ namespace rivals {
     }
     file_in.close();
   }
+
+  bool readHeader(string sample, string & version, off_t & offset, Capacity & num_elements){
+    version = "";
+    offset = 0;
+    num_elements = 0;
+    string filename = fileFromSample(sample);
+    fstream file;
+    file.open(filename.c_str(), ios::in | ios::binary);
+    if(!file){
+      printf("Could not open %s for reading.\n", filename.c_str());
+      return false;
+    }
+    char vers[8+1];
+    file.seekg(0, ios::beg);
+    file.read(vers, 8);
+    vers[8] = 0;
+    version = vers;
+    if(version.compare("RIVAL001")){
+      printf("Version numbers do not agree.\n");
+      return false;
+    }
+    file.read((char *)&offset, sizeof(off_t));
+    file.read((char *)&num_elements, sizeof(Capacity));
+    
+    file.close();
+    return true;
+  }
   
   string fileFromSample(string sample) { return sample + ".riv"; }
   string chrFromSample(string sample) { return sample + ".map"; }
@@ -73,9 +100,8 @@ namespace rivals {
       file.seekg(0, ios::beg);
       file.write(version, 8);
 
-      uint32_t offset = 8 + sizeof(uint32_t) + sizeof(Capacity);
-      printf("offset is %u\n", offset);
-      file.write((char *)&offset, sizeof(uint32_t));
+      off_t offset = 8 + sizeof(off_t) + sizeof(Capacity);
+      file.write((char *)&offset, sizeof(off_t));
       file.write((char *)&bed_size, sizeof(Capacity));
 
       Interval arr[CACHE];
@@ -108,7 +134,7 @@ namespace rivals {
 	chrmap.insert(pair<string, pair<Capacity, Capacity> >(curr_chr, temp));
       }
 
-      file.seekg(8 + sizeof(uint32_t), ios::beg);
+      file.seekg(8 + sizeof(off_t), ios::beg);
       if(!file) printf("ERRRRROR\n");
       cout <<"bed size is " << bed_size << endl;
       file.write((char *)&bed_size, sizeof(Capacity));
