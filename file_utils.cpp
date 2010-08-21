@@ -40,6 +40,10 @@ namespace rivals {
       char version[8] = {'R','I','V','A','L','0','0','1'};
       file.seekg(0, ios::beg);
       file.write(version, 8);
+
+      uint32_t offset = 8 + sizeof(uint32_t) + sizeof(Capacity);
+      printf("offset is %u\n", offset);
+      file.write((char *)&offset, sizeof(uint32_t));
       file.write((char *)&bed_size, sizeof(Capacity));
 
       Interval arr[CACHE];
@@ -72,7 +76,7 @@ namespace rivals {
 	chrmap.insert(pair<string, pair<Capacity, Capacity> >(curr_chr, temp));
       }
 
-      file.seekg(8, ios::beg);
+      file.seekg(8 + sizeof(uint32_t), ios::beg);
       if(!file) printf("ERRRRROR\n");
       cout <<"bed size is " << bed_size << endl;
       file.write((char *)&bed_size, sizeof(Capacity));
