@@ -38,8 +38,8 @@ namespace rivals {
 
   bool Interval::inRange(Domain start, Domain stop){
     if(stop <= start) return false;
-    std::cout << std::numeric_limits<Domain>::min()/2 << std::endl;
-    std::cout << std::numeric_limits<Domain>::max()/2 << std::endl;
+    //std::cout << std::numeric_limits<Domain>::min()/2 << std::endl;
+    //std::cout << std::numeric_limits<Domain>::max()/2 << std::endl;
     if(start < std::numeric_limits<Domain>::min()/2) return false;
     if(stop  > std::numeric_limits<Domain>::max()/2) return false;
     return true;

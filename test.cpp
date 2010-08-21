@@ -2,8 +2,9 @@
 #include <string>
 
 #include "interval.h"
+#include "file_utils.h"
 //#include "utils.h"
-//#include "bedfile.h"
+#include "bedfile.h"
 
 using namespace std;
 using namespace rivals;
@@ -16,6 +17,9 @@ int main(){
   printf("%d\n", a.overlaps(b));
   printf("%d\n", !a.overlaps(b, true));
   printf("%d\n", b < a);
+
+  BEDfile bed("test_sorted.bed");
+  rivalWriter(bed, "awesome_sample");
 
   /**
   string bedfile = "test_sorted.bed";

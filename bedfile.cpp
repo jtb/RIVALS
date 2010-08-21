@@ -2,7 +2,6 @@
 #include <vector>
 
 #include "interval.h"
-//#include "fileutils.h"
 #include "utils.h"
 #include "bedfile.h"
 
