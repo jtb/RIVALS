@@ -29,12 +29,34 @@ int main(){
     cout << version << "\t" << offset << "\t" << num_elements << endl;
   }
   ForwardCache<Interval> fvector(fileFromSample("awesome_sample"));
+  CenteredCache<Interval> cvector(fileFromSample("awesome_sample"), true);
   fvector.setRange(offset, 1, 11);
+  cvector.setRange(offset, 1, 11);
   Interval intv;
   for(Capacity i = 0; i < fvector.size(); i++){
     intv = fvector.at(i);
     intv.printInterval();
+    intv = cvector.at(i);
+    intv.printInterval();
   }
+
+  fvector.setRange(offset, 0, 14);
+  cvector.setRange(offset, 0, 14);
+  for(Capacity i = 0; i < fvector.size(); i++){
+    intv = fvector.at(i);
+    intv.printInterval();
+    intv = cvector.at(i);
+    intv.printInterval();
+  }
+
+  string name = "charfile.txt";
+  CenteredCache<char> twc(name, false);
+  twc.setRange(0, 0, 16);
+  twc.set(14, 'W');
+  for(Capacity i = 0; i < twc.size(); i++){
+    printf("%c", twc.at(i));
+  }
+  printf("\n");
 
    //indexNodes(offset, "awesome_sample");
 
