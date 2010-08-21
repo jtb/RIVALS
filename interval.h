@@ -21,20 +21,23 @@ namespace rivals {
 
     Length getLength() const;
 
+    bool inRange(Domain start, Domain stop);
+
     bool overlaps(const Interval & b, bool strand_specific = false);
       
     bool operator<(const Interval & b) const;
+
+    void printInterval() const;
 
   private:
     void setStrand(int s);
     void setStart(Domain start);
     void setStop(Domain stop);
     
-    Domain left; //      4 bytes
-    Domain right; //     4 bytes
-    Domain submax; //    4 bytes
-    int strand; // 4 bytes
-    // total bytes =     16 bytes
+    Domain submax; // 4 bytes
+    Domain left; //   4 bytes
+    Domain right; //  4 bytes
+    // total bytes = 12 bytes
   };
   
 }//namespace rivals

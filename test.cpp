@@ -2,19 +2,22 @@
 #include <string>
 
 #include "interval.h"
-#include "utils.h"
-#include "bedfile.h"
+//#include "utils.h"
+//#include "bedfile.h"
 
 using namespace std;
 using namespace rivals;
 
 int main(){
-  Interval a(10, 20, PLUS);
+  Interval a(6, 128, PLUS);
   Interval b(5, 15, MINUS);
+  a.printInterval();
+  b.printInterval();
   printf("%d\n", a.overlaps(b));
   printf("%d\n", !a.overlaps(b, true));
   printf("%d\n", b < a);
 
+  /**
   string bedfile = "test_sorted.bed";
   BEDfile bf(bedfile);
   Interval c;
@@ -22,6 +25,7 @@ int main(){
   while(bf.next(chr, c)){}
 
   writeChrMap(bf.getChrMap(), "mychr.map");
+  **/
 
   return 0;
 }

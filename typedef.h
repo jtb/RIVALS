@@ -5,7 +5,8 @@
 
 namespace rivals {
 
-  typedef int32_t Domain;
+  //typedef int32_t Domain;
+  typedef uint32_t Domain;
   typedef uint32_t Length;
   typedef uint64_t Capacity;
 
