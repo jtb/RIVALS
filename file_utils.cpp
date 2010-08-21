@@ -1,8 +1,10 @@
 #include <fstream>
+#include <sstream>
 #include <iostream>
 
 #include "bedfile.h"
 #include "file_utils.h"
+#include "utils.h"
 #include "interval.h"
 
 using namespace std;
@@ -23,6 +25,36 @@ namespace rivals {
     }
   }
 
+  void readChrMap(string filename, map<string, pair<Capacity, Capacity> > & chrmap){
+    chrmap.clear();
+    ifstream file_in(filename.c_str());
+    string line;
+    
+    if(file_in.is_open()){
+      while(!file_in.eof()){
+        getline(file_in, line);
+        if(line == "") continue;
+        vector<string> fields;
+        Tokenize(line, fields, " \t");
+        assert(fields.size() == 3);
+        string chr = fields.at(0);
+	
+	Capacity start;
+	Capacity stop;
+	istringstream s_start(fields.at(1));
+        s_start >> start;
+	istringstream s_stop(fields.at(2));
+        s_stop >> stop;
+
+	pair<Capacity, Capacity> temp(start, stop);
+	chrmap.insert(pair<string, pair<Capacity, Capacity> >(chr, temp));
+      }
+    }else{
+      printf("Could not open %s\n", filename.c_str());
+    }
+    file_in.close();
+  }
+  
   string fileFromSample(string sample) { return sample + ".riv"; }
   string chrFromSample(string sample) { return sample + ".map"; }
 
@@ -82,6 +114,10 @@ namespace rivals {
       file.write((char *)&bed_size, sizeof(Capacity));
 
       writeChrMap(chrmap, chrFromSample(sample));
+      
+      //chrmap.clear();
+      //readChrMap(chrFromSample(sample), chrmap);
+      //writeChrMap(chrmap, chrFromSample("blah"));
     }else{
       printf("Could not open %s for writing\n", fileFromSample(sample).c_str());
     }
