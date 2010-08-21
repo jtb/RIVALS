@@ -10,7 +10,18 @@
 using namespace std;
 
 namespace rivals {
-  void writeChrMap(const map<string, pair<Capacity, Capacity> > & chrmap, string filename){
+  void getRanges(string chr, const map<string, pair<Capacity, Capacity> > & chrmap, Capacity & start, Capacity & stop){
+    map<string, pair<Capacity, Capacity> >::const_iterator it;
+    it = chrmap.find(chr);
+    if(it == chrmap.end()){
+      printf("Chromosome not in map!\n");
+    }
+    start = it->second.first;
+    stop = it->second.second;
+  }
+
+  void writeChrMap(const map<string, pair<Capacity, Capacity> > & chrmap, string sample){
+    string filename = chrFromSample(sample);
     ofstream file_out (filename.c_str());
     if (file_out.is_open())
       {
@@ -25,7 +36,8 @@ namespace rivals {
     }
   }
 
-  void readChrMap(string filename, map<string, pair<Capacity, Capacity> > & chrmap){
+  void readChrMap(string sample, map<string, pair<Capacity, Capacity> > & chrmap){
+    string filename = chrFromSample(sample);
     chrmap.clear();
     ifstream file_in(filename.c_str());
     string line;

@@ -6,6 +6,7 @@
 //#include "utils.h"
 #include "bedfile.h"
 #include "cache.h"
+#include "iterators.h"
 
 using namespace std;
 using namespace rivals;
@@ -58,7 +59,15 @@ int main(){
   }
   printf("\n");
 
-   //indexNodes(offset, "awesome_sample");
+  Sample s("awesome_sample");
+  s.setChr("chrY");
+  string chrom;
+  while(s.next(chrom, intv)){
+    printf("%s\t", chrom.c_str());
+    intv.printInterval();
+  }
+
+  //indexNodes(offset, "awesome_sample");
 
   /**
   string bedfile = "test_sorted.bed";
