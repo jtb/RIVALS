@@ -114,6 +114,7 @@ namespace rivals {
       
       void setRange(off_t offset, Capacity start, Capacity stop){
 	assert(start < stop);
+	flush();
 	file_start = offset + start*sizeof(T);
 	num_elements = stop - start;
 	batch(0);

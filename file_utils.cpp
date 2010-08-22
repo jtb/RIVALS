@@ -105,11 +105,12 @@ namespace rivals {
   string fileFromSample(string sample) { return sample + ".riv"; }
   string chrFromSample(string sample) { return sample + ".map"; }
 
+  bool getMidpoint(Capacity low, Capacity high, Capacity & mp){
+    mp = (high-low)/2 + low;
+    return (low < high);
+  }
+  
   namespace {
-    bool getMidpoint(Capacity low, Capacity high, Capacity & mp){
-      mp = (high-low)/2 + low;
-      return (low < high);
-    }
     bool indexNodesHelper(CenteredCache<Interval> & cc, Capacity low, Capacity high, Domain & value){
       Capacity root;
       if(getMidpoint(low, high, root)){

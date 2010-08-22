@@ -9,6 +9,8 @@
 namespace rivals {
   class BEDfile;
 
+  bool getMidpoint(Capacity low, Capacity high, Capacity & mp);
+
   void writeChrMap(const std::map<std::string, std::pair<Capacity, Capacity> > & chrmap, std::string sample);
   void readChrMap(std::string sample, std::map<std::string, std::pair<Capacity, Capacity> > & chrmap, std::string chrom = ""); 
 
