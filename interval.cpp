@@ -22,7 +22,7 @@ namespace rivals {
   Length Interval::getLength() const { return (getStop() - getStart()); }
 
   void Interval::printInterval() const{
-    std::cout << getStart() << "\t" << getStop() << "\t";
+    std::cout << getSubMax() << "\t" << getStart() << "\t" << getStop() << "\t";
     int s = getStrand();
     if(s == MINUS) std::cout << "-" << std::endl;
     else if(s == PLUS) std::cout << "+" << std::endl;

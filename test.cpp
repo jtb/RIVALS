@@ -22,6 +22,7 @@ int main(){
 
   BEDfile bed("test_sorted.bed");
   rivalWriter(bed, "awesome_sample");
+  indexNodes("awesome_sample");
 
   string version;
   off_t offset;

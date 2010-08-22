@@ -6,6 +6,7 @@
 #include "file_utils.h"
 #include "utils.h"
 #include "interval.h"
+#include "cache.h"
 
 using namespace std;
 
@@ -97,6 +98,54 @@ namespace rivals {
   string fileFromSample(string sample) { return sample + ".riv"; }
   string chrFromSample(string sample) { return sample + ".map"; }
 
+  namespace {
+    bool getMidpoint(Capacity low, Capacity high, Capacity & mp){
+      mp = (high-low)/2 + low;
+      return (low < high);
+    }
+    bool indexNodesHelper(CenteredCache<Interval> & cc, Capacity low, Capacity high, Domain & value){
+      Capacity root;
+      if(getMidpoint(low, high, root)){
+	Domain left, right;
+	bool has_left = indexNodesHelper(cc, low, root, left);
+	bool has_right = indexNodesHelper(cc, root+1, high, right);
+
+	Interval i = cc.at(root);
+	value = i.getStop();
+	if(has_left) value = max(value, left);
+	if(has_right) value = max(value, right);
+	i.setSubMax(value);
+	cc.set(root, i);
+	return true;
+      }
+      return false;
+    }
+    
+  }
+
+  void indexNodes(string sample){
+    
+    map<string, pair<Capacity, Capacity> > chrmap;
+    readChrMap(sample, chrmap);
+    string version;
+    off_t offset;
+    Capacity num_elements;
+    readHeader(sample, version, offset, num_elements);
+
+    CenteredCache<Interval> cvector(fileFromSample(sample), false);
+    map<string, pair<Capacity, Capacity> >::const_iterator it;
+    Capacity start;
+    Capacity stop;
+    string chr;
+    for(it = chrmap.begin(); it != chrmap.end(); ++it){
+      Domain value = 0;
+      chr = it->first;
+      getRanges(chr, chrmap, start, stop);
+      cvector.setRange(offset, start, stop);
+      indexNodesHelper(cvector, 0, stop-start, value);
+    }
+  }
+
   void rivalWriter(BEDfile & bed, string sample){
     
     map<string, pair<Capacity, Capacity> > chrmap;
@@ -151,7 +200,7 @@ namespace rivals {
       cout <<"bed size is " << bed_size << endl;
       file.write((char *)&bed_size, sizeof(Capacity));
 
-      writeChrMap(chrmap, chrFromSample(sample));
+      writeChrMap(chrmap, sample);
       
       //chrmap.clear();
       //readChrMap(chrFromSample(sample), chrmap);

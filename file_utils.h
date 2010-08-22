@@ -15,6 +15,7 @@ namespace rivals {
   bool readHeader(std::string sample, std::string & version, off_t & offset, Capacity & num_elements);
 
   void rivalWriter(BEDfile & bed, std::string sample);
+  void indexNodes(std::string sample);
 
   std::string fileFromSample(std::string sample);
   std::string chrFromSample(std::string sample);
