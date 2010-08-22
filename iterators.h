@@ -21,17 +21,12 @@ namespace rivals {
     virtual void saveAsBED();
 
     virtual bool next(std::string & chrom, Interval & intv) = 0;
-    virtual void setChr(std::string chrom){
-      chr = chrom;
-    }
-
-    virtual std::string getChr(){
-      return chr;
-    }
+    virtual void setChr(std::string chrom) = 0;
+    
     virtual const ChromList & getChrList(){
       return chr_list;
     }
-
+    
   protected:
     virtual void mergeChromLists(const ChromList & clist1, const ChromList & clist2){
       chr_list.clear();
@@ -58,7 +53,7 @@ namespace rivals {
 
     bool next(std::string & chrom, Interval & intv);
     void setChr(std::string chrom);
-
+    
   private:
     std::string samp_name;
     bool on_chromosome;
@@ -75,9 +70,9 @@ namespace rivals {
 
     bool next(std::string & chrom, Interval & intv);
     void setChr(std::string chrom);
-	    
+    	    
   private:
-    
+
     std::string samp_name;
     bool on_chromosome;
     Interval d;
@@ -93,6 +88,25 @@ namespace rivals {
       bool goLeft;
     };
     std::stack<Cargo> recurse;
+  };
+
+  class Merge : public Iterator {
+  public:
+    Merge(Iterator & a, Iterator & b);
+    ~Merge(){}
+
+    bool next(std::string & chrom, Interval & intv);
+    void setChr(std::string chrom);
+    
+  private:
+    Iterator & itA;
+    Iterator & itB;
+    Interval a;
+    Interval b;
+    bool avalid;
+    bool bvalid;
+    std::string chromA;
+    std::string chromB;
   };
 
 }

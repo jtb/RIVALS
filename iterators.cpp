@@ -19,7 +19,7 @@ namespace rivals {
 	if(c.getStrand() == PLUS) strand = "+";
 	else if(c.getStrand() == MINUS) strand = "-";
 	else strand = ".";
-	cout << chr << "\t" << c.getStart() << "\t" << c.getStop() << "\t\t";
+	cout << chrom << "\t" << c.getStart() << "\t" << c.getStop() << "\t\t";
 	if(has_score){
 	  cout << score;
 	}
@@ -69,6 +69,19 @@ namespace rivals {
     setChr(chrom);
   }
 
+  Merge::Merge(Iterator & a, Iterator & b) : itA(a), itB(b) {
+    mergeChromLists(a.getChrList(), b.getChrList());
+  }
+
+
+  void Merge::setChr(std::string chrom){
+    itA.setChr(chrom);
+    itB.setChr(chrom);
+    avalid = itA.next(chromA, a);
+    bvalid = itB.next(chromB, b);
+    chr = chrom;
+   }
+
   bool Sample::next(string & chrom, Interval & intv){
     if(!on_chromosome) return false;
     chrom = chr;
@@ -79,6 +92,36 @@ namespace rivals {
     }
     return false;
   }
+
+  bool Merge::next(std::string & chrom, Interval & intv){
+    if(!avalid && !bvalid) return false;
+    
+    if(avalid && !bvalid){
+      intv = a;
+      chrom = chromA;
+      avalid = itA.next(chromA, a);
+      return true;
+    }
+    if(!avalid && bvalid){
+      intv = b;
+      chrom = chromB;
+      bvalid = itB.next(chromB, b);
+      return true;
+    }
+    //avalid && bvalid
+    assert(chromA == chromB);
+    if(a < b){
+      intv = a;
+      chrom = chromA;
+      avalid = itA.next(chromA, a);
+    }else{
+      intv = b;
+      chrom = chromB;
+      bvalid = itB.next(chromB, b);
+    }
+    return true;
+  }
+
 
   /**
   bool Range::next(string & chrom, Interval & intv){                                                                                                         
