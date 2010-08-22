@@ -205,7 +205,6 @@ namespace rivals {
 
       file.seekg(8 + sizeof(off_t), ios::beg);
       if(!file) printf("ERRRRROR\n");
-      cout <<"bed size is " << bed_size << endl;
       file.write((char *)&bed_size, sizeof(Capacity));
 
       writeChrMap(chrmap, sample);
