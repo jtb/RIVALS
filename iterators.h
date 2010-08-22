@@ -13,14 +13,17 @@ namespace rivals {
 
   class Iterator{
   public:
-  Iterator() : chr(""){}
+  Iterator() : chr(""), has_score(false), score(0) {
+      chr_list.clear();
+    }
     virtual ~Iterator(){}
+    virtual void saveAsBED();
 
     virtual bool next(std::string & chrom, Interval & intv) = 0;
     virtual void setChr(std::string chrom){
       chr = chrom;
     }
-    
+
     virtual std::string getChr(){
       return chr;
     }
@@ -41,14 +44,15 @@ namespace rivals {
     }
     
     std::string chr;
+    bool has_score;
+    int score;
     ChromList chr_list;
   };
-
-  //void saveAsBED(Iterator & iter);
 
   class Sample : public Iterator {
   public:
     Sample(std::string sample);
+    Sample(std::string sample, std::string chrom);
     ~Sample(){}
 
     bool next(std::string & chrom, Interval & intv);
@@ -56,6 +60,7 @@ namespace rivals {
 
   private:
     std::string samp_name;
+    bool on_chromosome;
     Capacity index;
     off_t offset;
     ForwardCache<Interval> fvector;

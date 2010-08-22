@@ -11,14 +11,15 @@
 using namespace std;
 
 namespace rivals {
-  void getRanges(string chr, const map<string, pair<Capacity, Capacity> > & chrmap, Capacity & start, Capacity & stop){
+  bool getRanges(string chr, const map<string, pair<Capacity, Capacity> > & chrmap, Capacity & start, Capacity & stop){
     map<string, pair<Capacity, Capacity> >::const_iterator it;
     it = chrmap.find(chr);
     if(it == chrmap.end()){
-      printf("Chromosome not in map!\n");
+      return false;
     }
     start = it->second.first;
     stop = it->second.second;
+    return true;
   }
 
   void writeChrMap(const map<string, pair<Capacity, Capacity> > & chrmap, string sample){
@@ -37,7 +38,7 @@ namespace rivals {
     }
   }
 
-  void readChrMap(string sample, map<string, pair<Capacity, Capacity> > & chrmap){
+  void readChrMap(string sample, map<string, pair<Capacity, Capacity> > & chrmap, string chrom){
     string filename = chrFromSample(sample);
     chrmap.clear();
     ifstream file_in(filename.c_str());
@@ -60,7 +61,13 @@ namespace rivals {
         s_stop >> stop;
 
 	pair<Capacity, Capacity> temp(start, stop);
-	chrmap.insert(pair<string, pair<Capacity, Capacity> >(chr, temp));
+	if(chrom == ""){
+	  chrmap.insert(pair<string, pair<Capacity, Capacity> >(chr, temp));
+	}else{
+	  if(chrom == chr){
+	    chrmap.insert(pair<string, pair<Capacity, Capacity> >(chr, temp));
+	  }
+	}
       }
     }else{
       printf("Could not open %s\n", filename.c_str());
@@ -202,9 +209,6 @@ namespace rivals {
 
       writeChrMap(chrmap, sample);
       
-      //chrmap.clear();
-      //readChrMap(chrFromSample(sample), chrmap);
-      //writeChrMap(chrmap, chrFromSample("blah"));
     }else{
       printf("Could not open %s for writing\n", fileFromSample(sample).c_str());
     }
