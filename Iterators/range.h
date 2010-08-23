@@ -15,6 +15,7 @@ namespace rivals {
   class Range : public Iterator {
   public:
     Range(std::string sample, std::string chrom, Domain start, Domain stop);
+    Range(std::string sample, std::string chrom, Domain point);
     ~Range(){}
 
     bool next(std::string & chrom, Interval & intv);

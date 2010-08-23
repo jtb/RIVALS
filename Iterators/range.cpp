@@ -17,6 +17,20 @@ namespace rivals {
 
     setChr(chrom);
   }
+
+  Range::Range(string sample, string chrom, Domain point) : Iterator(), samp_name(sample), chr(chrom), on_chromosome(false), d(point, point+1, BOTH), offset(0), cvector(fileFromSample(sample)) {
+    readChrMap(samp_name, chrmap, chrom);
+    map<string, pair<Capacity, Capacity> >::const_iterator it;
+    for(it = chrmap.begin(); it != chrmap.end(); ++it){
+      chr_list.insert(it->first);
+    }
+    
+    string version;
+    Capacity num_elements;
+    readHeader(samp_name, version, offset, num_elements);
+
+    setChr(chrom);
+  }
   
   bool Range::next(string & chrom, Interval & intv){
     if(!on_chromosome) return false;

@@ -154,6 +154,11 @@ namespace rivals {
     }
   }
 
+  void importData(BEDfile & bed, string sample){
+    rivalWriter(bed, sample);
+    indexNodes(sample);
+  }
+
   void rivalWriter(BEDfile & bed, string sample){
     
     map<string, pair<Capacity, Capacity> > chrmap;
