@@ -2,6 +2,7 @@
 #define TYPEDEF_H_
 
 #include <stdint.h>
+#include <assert.h>
 
 namespace rivals {
 
