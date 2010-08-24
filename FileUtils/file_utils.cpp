@@ -181,6 +181,7 @@ namespace rivals {
       Interval arr[CACHE];
       string chr;
       Interval c;
+      Interval prev;
 
       int count;
       do {
@@ -191,12 +192,18 @@ namespace rivals {
 	  if(chr.compare(curr_chr)){//curr_chr != chr
 	    if(curr_chr.compare("")){//curr_chr != ""
 	      pair<Capacity, Capacity> temp(curr_chr_start, bed_size);
+	      //make sure chromosome does not already exist
+	      assert(chrmap.find(curr_chr) == chrmap.end());
 	      chrmap.insert(pair<string, pair<Capacity, Capacity> >(curr_chr, temp));
 	    }
 	    curr_chr = chr;
 	    curr_chr_start = bed_size;
+	  }else{
+	    //check if old interval is less than new interval
+	    assert(prev < c || !(c < prev));
 	  }
 	  bed_size++;
+	  prev = c;
 	}
 	if(count){
           file.write((char *)&arr, count*sizeof(Interval));
@@ -205,6 +212,8 @@ namespace rivals {
    
       if(curr_chr.compare("")){
 	pair<Capacity, Capacity> temp(curr_chr_start, bed_size);
+	//Make sure that chromosome does not already exist
+	assert(chrmap.find(curr_chr) == chrmap.end());
 	chrmap.insert(pair<string, pair<Capacity, Capacity> >(curr_chr, temp));
       }
 
