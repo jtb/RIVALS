@@ -16,7 +16,10 @@ namespace rivals {
     Domain getSubMax() const;
 
     void setInterval(Domain start, Domain stop, int str);
-  
+    void setStrand(int s);
+    void setStart(Domain start);
+    void setStop(Domain stop);
+     
     void setSubMax(Domain max);
 
     Length getLength() const;
@@ -30,10 +33,6 @@ namespace rivals {
     void printInterval() const;
 
   private:
-    void setStrand(int s);
-    void setStart(Domain start);
-    void setStop(Domain stop);
-    
     Domain submax; // 4 bytes
     Domain left; //   4 bytes
     Domain right; //  4 bytes

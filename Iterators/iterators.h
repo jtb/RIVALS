@@ -4,5 +4,6 @@
 #include "sample.h"
 #include "range.h"
 #include "merge.h"
+#include "flatten.h"
 
 #endif

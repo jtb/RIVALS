@@ -2,7 +2,7 @@
 
 using namespace std;
 namespace rivals {
-  Merge::Merge(Iterator & a, Iterator & b) : itA(a), itB(b) {
+  Merge::Merge(Iterator & a, Iterator & b) : Iterator(), itA(a), itB(b) {
     mergeChromLists(a.getChrList(), b.getChrList());
   }
 

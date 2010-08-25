@@ -10,7 +10,7 @@ namespace rivals {
     string strand;
     set<string>::const_iterator it;
     Interval c;
-    for(it = chr_list.begin(); it != chr_list.end(); ++it){
+    for(it = this->getChrList().begin(); it != this->getChrList().end(); ++it){
       chrom = (*it);
       setChr(chrom);
 
