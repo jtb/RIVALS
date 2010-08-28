@@ -11,6 +11,9 @@ namespace rivals {
   }
 
   void Clique::setChr(std::string chrom){
+    while(!endpoints.empty()){
+      endpoints.pop();
+    }
     iter.setChr(chrom);
     Interval b;
     count = 0;
@@ -25,6 +28,7 @@ namespace rivals {
       //start
       Capacity end = endpoints.top();
       if(start_empty() || end <= start){
+	assert(count > 0);
 	endpoints.pop();
 	count--;
 	if(count < min_overlap && in_interval){

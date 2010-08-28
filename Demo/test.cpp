@@ -7,14 +7,14 @@ using namespace std;
 using namespace rivals;
 
 int main(){
-  //BEDfile bed1("Data/test_sorted.bed");
-  //importData(bed1, "bsample");
+  BEDfile bed1("Data/test_sorted.bed");
+  importData(bed1, "bsample");
 
-  BEDfile bed2("Data/itree.bed");
-  importData(bed2, "asample");
+  //BEDfile bed2("Data/itree.bed");
+  //importData(bed2, "asample");
 
-  Sample s("asample");
-  Clique c(s, 3);
+  Sample s("bsample");
+  Clique c(s, 5);
   c.saveAsBED();
 
   //Merge(Sample("asample"), Sample("asample")).saveAsBED();

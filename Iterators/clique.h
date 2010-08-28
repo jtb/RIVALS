@@ -31,7 +31,7 @@ namespace rivals {
     Iterator & iter;
 
     bool in_interval;
-    Capacity count;
+    int count;
    
     Capacity start;
     bool start_full;
