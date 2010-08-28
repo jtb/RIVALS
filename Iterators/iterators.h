@@ -8,6 +8,7 @@
 #include "flatten.h"
 #include "clique.h"
 #include "no_nests.h"
+#include "contained_in.h"
 
 namespace rivals {
 
@@ -52,6 +53,11 @@ namespace rivals {
       NoNests * nn = new NoNests(a);
       v.push_back(nn);
       return *nn;
+    }
+    Iterator & contained_in(Iterator & a, Iterator & b){
+      ContainedIn * ci = new ContainedIn(a,b);
+      v.push_back(ci);
+      return *ci;
     }
     
     ~Chain(){
