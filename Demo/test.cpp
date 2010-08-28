@@ -25,7 +25,9 @@ int main(){
   //chr8 101641327 1016413524 .
   //chr8 125556826 1255568374 .
   //chr8 127407510 127407535 .
-  c.clique(c.merge(c.sample("bsample"),c.range("bsample", "chr8", 40568857, 227407535)), 4).saveAsBED();
+  //c.clique(c.merge(c.range("bsample", "chr8", 40568857, 227407535),c.range("bsample", "chr8", 40568857, 227407535)), 4).saveAsBED();
+
+  c.no_nests(c.range("asample")).saveAsBED();
 
   //Clique c(s, 5);
   //c.saveAsBED();

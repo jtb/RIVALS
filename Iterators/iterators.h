@@ -7,17 +7,18 @@
 #include "merge.h"
 #include "flatten.h"
 #include "clique.h"
+#include "no_nests.h"
 
 namespace rivals {
 
   class Chain {
   public:
-    Iterator & sample(std::string sample){
+    Iterator & range(std::string sample){
       Sample *s = new Sample(sample);
       v.push_back(s);
       return *s;
     }
-    Iterator & sample(std::string sample, std::string chrom){
+    Iterator & range(std::string sample, std::string chrom){
       Sample *s = new Sample(sample, chrom);
       v.push_back(s);
       return *s;
@@ -46,6 +47,11 @@ namespace rivals {
       Clique * c = new Clique(a, minOverlap);
       v.push_back(c);
       return *c;
+    }
+    Iterator & no_nests(Iterator & a){
+      NoNests * nn = new NoNests(a);
+      v.push_back(nn);
+      return *nn;
     }
     
     ~Chain(){
