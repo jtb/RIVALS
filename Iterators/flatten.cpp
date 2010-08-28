@@ -12,10 +12,12 @@ namespace rivals {
 
   void Flatten::setChr(std::string chrom){
     iter.setChr(chrom);
+    count = 0;
+    clean_up = false;
     if(iter.next(chrom, head)){
       count = 1;
+      clean_up = true;
     }
-    clean_up = true;
   }
 
   bool Flatten::next(std::string & chrom, Interval & intv){

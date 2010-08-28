@@ -5,5 +5,6 @@
 #include "range.h"
 #include "merge.h"
 #include "flatten.h"
+#include "clique.h"
 
 #endif
