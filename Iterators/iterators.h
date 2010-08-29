@@ -9,6 +9,7 @@
 #include "clique.h"
 #include "no_nests.h"
 #include "contained_in.h"
+#include "interval_iter.h"
 
 namespace rivals {
 
@@ -58,6 +59,11 @@ namespace rivals {
       ContainedIn * ci = new ContainedIn(a,b);
       v.push_back(ci);
       return *ci;
+    }
+    Iterator & interval(std::string chr, Domain start, Domain stop){
+      IntervalIter * ii = new IntervalIter(chr,start,stop);
+      v.push_back(ii);
+      return *ii;
     }
     
     ~Chain(){

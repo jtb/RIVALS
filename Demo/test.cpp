@@ -28,7 +28,9 @@ int main(){
   //c.clique(c.merge(c.range("bsample", "chr8", 40568857, 227407535),c.range("bsample", "chr8", 40568857, 227407535)), 4).saveAsBED();
 
   //c.no_nests(c.range("asample")).saveAsBED();
-  c.contained_in(c.flatten(c.range("asample")), c.range("asample")).saveAsBED();
+  //c.contained_in(c.flatten(c.range("asample")), c.range("asample")).saveAsBED();
+  c.range("asample", "chr1", 16, 22).saveAsBED();
+  c.contained_in(c.range("asample", "chr1", 16, 22),c.interval("chr1", 16, 22)).saveAsBED();
 
   //Clique c(s, 5);
   //c.saveAsBED();
