@@ -2,7 +2,6 @@
 #define CONTAINED_IN_H_
 
 #include "iterator.h"
-#include "no_nests.h"
 
 namespace rivals {
 

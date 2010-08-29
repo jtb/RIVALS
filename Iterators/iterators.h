@@ -10,6 +10,7 @@
 #include "no_nests.h"
 #include "contained_in.h"
 #include "interval_iter.h"
+#include "strand.h"
 
 namespace rivals {
 
@@ -64,6 +65,16 @@ namespace rivals {
       IntervalIter * ii = new IntervalIter(chr,start,stop);
       v.push_back(ii);
       return *ii;
+    }
+    Iterator & get_strand(Iterator & a, int str){
+      GetStrand * gs = new GetStrand(a, str);
+      v.push_back(gs);
+      return *gs;
+    }
+    Iterator & set_strand(Iterator & a, int str){
+      SetStrand * ss = new SetStrand(a, str);
+      v.push_back(ss);
+      return *ss;
     }
     
     ~Chain(){

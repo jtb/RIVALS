@@ -30,7 +30,7 @@ int main(){
   //c.no_nests(c.range("asample")).saveAsBED();
   //c.contained_in(c.flatten(c.range("asample")), c.range("asample")).saveAsBED();
   c.range("asample", "chr1", 16, 22).saveAsBED();
-  c.contained_in(c.range("asample", "chr1", 16, 22),c.interval("chr1", 16, 22)).saveAsBED();
+  c.contained_in(c.get_strand(c.set_strand(c.range("asample", "chr1", 16, 22), MINUS), MINUS),c.interval("chr1", 16, 22)).saveAsBED();
 
   //Clique c(s, 5);
   //c.saveAsBED();
