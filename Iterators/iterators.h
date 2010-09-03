@@ -11,6 +11,7 @@
 #include "contained_in.h"
 #include "interval_iter.h"
 #include "strand.h"
+#include "overlaps.h"
 
 namespace rivals {
 
@@ -60,6 +61,11 @@ namespace rivals {
       ContainedIn * ci = new ContainedIn(a,b);
       v.push_back(ci);
       return *ci;
+    }
+    Iterator & overlaps(Iterator & a, Iterator & b){
+      Overlaps * ov = new Overlaps(a,b);
+      v.push_back(ov);
+      return *ov;
     }
     Iterator & interval(std::string chr, Domain start, Domain stop){
       IntervalIter * ii = new IntervalIter(chr,start,stop);

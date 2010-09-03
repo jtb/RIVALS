@@ -7,8 +7,8 @@ using namespace std;
 using namespace rivals;
 
 int main(){
-  BEDfile bed1("Data/test_sorted.bed");
-  importData(bed1, "bsample");
+  //BEDfile bed1("Data/test_sorted.bed");
+  //importData(bed1, "bsample");
 
   //BEDfile bed2("Data/itree.bed");
   //importData(bed2, "asample");
@@ -29,9 +29,13 @@ int main(){
 
   //c.no_nests(c.range("asample")).saveAsBED();
   //c.contained_in(c.flatten(c.range("asample")), c.range("asample")).saveAsBED();
-  c.range("asample", "chr1", 16, 22).saveAsBED();
-  c.contained_in(c.get_strand(c.set_strand(c.range("asample", "chr1", 16, 22), MINUS), MINUS),c.interval("chr1", 16, 22)).saveAsBED();
+  //c.range("asample", "chr1", 16, 22).saveAsBED();
+  //c.contained_in(c.get_strand(c.set_strand(c.range("asample", "chr1", 16, 22), MINUS), MINUS),c.interval("chr1", 16, 22)).saveAsBED();
 
+  c.range("bsample", "chr8", 40568857, 41728151).saveAsBED();
+  cout << endl << endl;
+  c.overlaps(c.range("bsample"), c.interval("chr8", 40568857, 41728151)).saveAsBED();
+    
   //Clique c(s, 5);
   //c.saveAsBED();
 
