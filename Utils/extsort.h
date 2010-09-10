@@ -26,9 +26,10 @@ namespace rivals {
 	size = file.tellg();
 	file.seekg(0, std::ios::beg);
 	num_elements = (size - offset)/sizeof(T);
+	std::cout << "number of elements is " << num_elements << std::endl;
 	
 	head = new char[offset];
-	file.read((char*)&head, offset);
+	file.read(head, offset);
 
 	traverseTree();
 	//rename("ExtSortTemp.0", origfile.c_str());
@@ -43,6 +44,7 @@ namespace rivals {
 	int num_files = 0;
 	std::string filename;
 	Capacity n;
+	//T * buffer = new T[MEMORY];
 	T buffer[MEMORY];
 
 	for(Capacity first_index = 0; first_index < num_elements; first_index += MEMORY){
@@ -67,7 +69,7 @@ namespace rivals {
 	//clean up
 	//remove original file
 	file.close();
-	remove(origfile.c_str());
+	///remove(origfile.c_str());
 	//merge until one
 	if(!fstack.empty()){
 	  Cargo c = fstack.top();
@@ -84,21 +86,20 @@ namespace rivals {
 	}
       }
      
-      Capacity sortChunk(std::string f, T * buffer, Capacity first_index){
+      Capacity sortChunk(std::string f, T *buffer, Capacity first_index){
 	Capacity valid_size = MEMORY;
 	if(this->num_elements < valid_size + first_index){
 	  valid_size = this->num_elements - first_index;
 	}
-	//T buffer[MEMORY];
-	this->file.read((char*)&buffer, valid_size*sizeof(T));
+	//T buffer2[MEMORY];
+	this->file.read((char*)buffer, valid_size*sizeof(T));
 	assert(this->file);
-	
 	std::sort(buffer, buffer+valid_size);
 	std::fstream outfile;
 	outfile.open(f.c_str(), std::ios::out|std::ios::binary|std::ios::trunc);
 	//outfile.seekg(offset, std::ios::beg);
-	outfile.write((char*)&head, offset);
-	outfile.write((char*)&buffer, valid_size*sizeof(T));
+	outfile.write(head, offset);
+	outfile.write((char*)buffer, valid_size*sizeof(T));
 	outfile.close();
 
 	return valid_size;
@@ -110,7 +111,7 @@ namespace rivals {
 	out.open("ExtSortTemp.temp", std::ios::out | std::ios::binary | std::ios::trunc);
         if(!out) printf("Could not open temp file for writing.\n");
 	//out.seekg(offset, std::ios::beg);
-	out.write((char*)&head, offset);
+	out.write(head, offset);
 	T buffer[CACHE];
 
 	Capacity c1 = 0;
