@@ -14,6 +14,7 @@ namespace rivals {
   enum Strand { PLUS, MINUS, BOTH};
 
 #define CACHE 2
+#define MEMORY 2
 
 }
 
