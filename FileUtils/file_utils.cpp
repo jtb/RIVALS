@@ -162,6 +162,8 @@ namespace rivals {
   void rivalWriter(BEDfile & bed, string sample){
     
     map<string, pair<Capacity, Capacity> > chrmap;
+    vector<string> chroms;
+    bool sorted = true;
     Capacity bed_size = 0;
     string curr_chr = "";
     Capacity curr_chr_start = 0;
@@ -184,42 +186,51 @@ namespace rivals {
       Interval prev;
 
       int count;
-      do {
+      do{
 	for(count = 0; count < CACHE; count++){
 	  if(!bed.next(chr, c)) break;
-	  arr[count] = c;
-
-	  if(chr.compare(curr_chr)){//curr_chr != chr
-	    if(curr_chr.compare("")){//curr_chr != ""
-	      pair<Capacity, Capacity> temp(curr_chr_start, bed_size);
-	      //make sure chromosome does not already exist
-	      assert(chrmap.find(curr_chr) == chrmap.end());
-	      chrmap.insert(pair<string, pair<Capacity, Capacity> >(curr_chr, temp));
+	  
+	  
+	  if(chrmap.find(chr) == chrmap.end()){
+	    //New chromosome
+	    pair<Capacity, Capacity> temp(1, chroms.size());
+	    chrmap.insert(pair<string, pair<Capacity, Capacity> >(chr, temp));
+	    c.setSubMax(chroms.size());
+	    chroms.push_back(chr);
+	  }else{//chrom already exists
+	    chrmap[chr].first++;
+	    c.setSubMax(chrmap[chr].second);
+	    if(curr_chr != chr && curr_chr != ""){
+	      sorted = false;
 	    }
-	    curr_chr = chr;
-	    curr_chr_start = bed_size;
-	  }else{
-	    //check if old interval is less than new interval
-	    assert(prev < c || !(c < prev));
+	    //assert(prev < c || !(c < prev));
+	    if(curr_chr == chr && c < prev){
+	      sorted = false;
+	    }
 	  }
-	  bed_size++;
+	  arr[count] = c;
+	  curr_chr = chr;
 	  prev = c;
 	}
 	if(count){
           file.write((char *)&arr, count*sizeof(Interval));
-        }
+	}
       }while(count == CACHE);
-   
-      if(curr_chr.compare("")){
-	pair<Capacity, Capacity> temp(curr_chr_start, bed_size);
-	//Make sure that chromosome does not already exist
-	assert(chrmap.find(curr_chr) == chrmap.end());
-	chrmap.insert(pair<string, pair<Capacity, Capacity> >(curr_chr, temp));
+      
+      //prepare chrmap
+      //Capacity bed_size = 0;
+      for(size_t i = 0; i < chroms.size(); i++){
+	Capacity len = chrmap[chroms.at(i)].first;
+	chrmap[chroms.at(i)].first = bed_size;
+	bed_size = bed_size + len;
+	chrmap[chroms.at(i)].second = bed_size;
       }
 
       file.seekg(8 + sizeof(off_t), ios::beg);
-      if(!file) printf("ERRRRROR\n");
+      if(!file) printf("could not write header to file.\n");
       file.write((char *)&bed_size, sizeof(Capacity));
+
+      printf("Sorted is %d\n", (int)sorted);
 
       writeChrMap(chrmap, sample);
       

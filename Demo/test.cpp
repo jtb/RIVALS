@@ -8,11 +8,12 @@ using namespace rivals;
 
 int main(){
   //BEDfile bed1("Data/test_sorted.bed");
-  //importData(bed1, "bsample");
+  //importData(bed1, "bsample2");
 
-  //BEDfile bed2("Data/itree.bed");
-  //importData(bed2, "asample");
+  BEDfile bed2("Data/itree.bed");
+  importData(bed2, "asample2");
 
+  /**
   Chain c;
   //Sample s1("bsample");
   //Sample s2("bsample");
@@ -54,6 +55,6 @@ int main(){
   //cout << endl << endl;
   //Range z("asample", "chr1", 19);
   //z.saveAsBED();
-
+  **/
   return 0;
 }
