@@ -38,6 +38,22 @@ namespace rivals {
     Domain right; //  4 bytes
     // total bytes = 12 bytes
   };
+
+  class cInterval {
+  public:
+  cInterval(Domain start, Domain stop, int str) : intv(start, stop, str) {}
+  cInterval() : intv() {}
+
+    bool operator<(const cInterval & b) const {
+      if(intv.getSubMax() == b.intv.getSubMax()){
+	return intv < b.intv;
+      }
+      return intv.getSubMax() < b.intv.getSubMax();
+    }
+
+  private:
+    Interval intv;
+  };
   
 }//namespace rivals
 

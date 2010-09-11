@@ -10,8 +10,13 @@ int main(){
   //BEDfile bed1("Data/test_sorted.bed");
   //importData(bed1, "bsample2");
 
+  //cout << "intervals is " << sizeof(Interval) << endl;
+  //cout << "cIntervals is " << sizeof(cInterval) << endl;
+
   BEDfile bed2("Data/itree.bed");
   importData(bed2, "asample2");
+  Chain c;
+  c.range("asample2", "chr1", 15, 25).saveAsBED();
 
   /**
   Chain c;

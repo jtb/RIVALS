@@ -157,7 +157,12 @@ namespace rivals {
 
   void importData(BEDfile & bed, string sample){
     if(!rivalWriter(bed, sample)){
-      //sort sample.riv  
+      //sort sample.riv
+      string version;
+      off_t offset;
+      Capacity num_elements;
+      readHeader(sample, version, offset, num_elements);
+      SortFile<cInterval> es(fileFromSample(sample), offset);
     }
     indexNodes(sample);
   }
