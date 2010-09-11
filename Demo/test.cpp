@@ -13,10 +13,12 @@ int main(){
   //cout << "intervals is " << sizeof(Interval) << endl;
   //cout << "cIntervals is " << sizeof(cInterval) << endl;
 
-  BEDfile bed2("Data/itree.bed");
-  importData(bed2, "asample2");
+  //BEDfile bed2("Data/itree.bed");
+  //importData(bed2, "asample2");
+  BEDfile bed("Data/test.bed");
+  importData(bed, "csample");
   Chain c;
-  c.range("asample2", "chr1", 15, 25).saveAsBED();
+  c.range("csample").saveAsBED();
 
   /**
   Chain c;
