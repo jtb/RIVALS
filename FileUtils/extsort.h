@@ -8,7 +8,7 @@
 #include <sstream>
 #include <stack>
 
-#include "/Users/barybrown/Rivals081710/FileUtils/cache.h"
+#include "cache.h"
 #include "typedef.h"
 
 namespace rivals {
@@ -32,7 +32,7 @@ namespace rivals {
 	file.read(head, offset);
 
 	traverseTree();
-	//rename("ExtSortTemp.0", origfile.c_str());
+	rename("ExtSortTemp.0", origfile.c_str());
       }
 
       ~SortFile(){

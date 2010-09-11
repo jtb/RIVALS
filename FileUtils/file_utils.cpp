@@ -7,6 +7,7 @@
 #include "utils.h"
 #include "interval.h"
 #include "cache.h"
+#include "extsort.h"
 
 using namespace std;
 
@@ -155,11 +156,13 @@ namespace rivals {
   }
 
   void importData(BEDfile & bed, string sample){
-    rivalWriter(bed, sample);
+    if(!rivalWriter(bed, sample)){
+      //sort sample.riv  
+    }
     indexNodes(sample);
   }
 
-  void rivalWriter(BEDfile & bed, string sample){
+  bool rivalWriter(BEDfile & bed, string sample){
     
     map<string, pair<Capacity, Capacity> > chrmap;
     vector<string> chroms;
@@ -239,6 +242,7 @@ namespace rivals {
     }
 
     file.close();
+    return sorted;
   }
 
 }

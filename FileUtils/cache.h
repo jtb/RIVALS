@@ -2,7 +2,7 @@
 #define CACHE_H_
 
 #include <fstream>
-#include "/Users/barybrown/Rivals081710/Utils/typedef.h"
+#include "typedef.h"
 
 namespace rivals {
 
