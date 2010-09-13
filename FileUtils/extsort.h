@@ -69,7 +69,7 @@ namespace rivals {
 	//clean up
 	//remove original file
 	file.close();
-	///remove(origfile.c_str());
+	remove(origfile.c_str());
 	//merge until one
 	if(!fstack.empty()){
 	  Cargo c = fstack.top();

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sys/stat.h>
 #include "bedfile.h"
 #include "file_utils.h"
 #include "iterators.h"
@@ -15,11 +16,17 @@ int main(){
 
   //BEDfile bed2("Data/itree.bed");
   //importData(bed2, "asample2");
-  BEDfile bed("Data/test.bed");
-  importData(bed, "csample");
-  Chain c;
-  c.range("csample").saveAsBED();
 
+  struct stat stFileInfo;
+  if(stat("csample.riv",&stFileInfo)){//file does not exist 
+    BEDfile bed("Data/testOverlap.bed");
+    importData(bed, "csample");
+  }
+  
+  Chain c;
+  //c.range("csample").saveAsBED();
+  c.overlaps(c.flatten(c.range("csample")), c.clique(c.range("csample"), 3)).saveAsBED();
+  
   /**
   Chain c;
   //Sample s1("bsample");
