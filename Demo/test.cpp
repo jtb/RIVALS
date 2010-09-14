@@ -18,7 +18,7 @@ int main(){
   //importData(bed2, "asample2");
 
   struct stat stFileInfo;
-  if(stat("csample.riv",&stFileInfo)){//file does not exist 
+  if(1 || stat("csample.riv",&stFileInfo)){//file does not exist 
     BEDfile bed("Data/testOverlap.bed");
     importData(bed, "csample");
   }

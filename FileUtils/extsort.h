@@ -7,6 +7,7 @@
 #include <fstream>
 #include <sstream>
 #include <stack>
+#include <memory>
 
 #include "cache.h"
 #include "typedef.h"
@@ -45,14 +46,15 @@ namespace rivals {
 	std::string filename;
 	Capacity n;
 	//T * buffer = new T[MEMORY];
-	T buffer[MEMORY];
+	//T buffer[MEMORY];
+	std::auto_ptr<MemBuffer> membuff(new MemBuffer());
 
 	for(Capacity first_index = 0; first_index < num_elements; first_index += MEMORY){
 	  //create filename, and sort chunk
 	  std::ostringstream stm;
 	  stm << base << num_files;
 	  filename = stm.str();
-	  n = sortChunk(filename, buffer, first_index);
+	  n = sortChunk(filename, membuff->buffer, first_index);
 	  Cargo c(n, filename);
 	  while(!fstack.empty() && fstack.top().num <= n){
 	    //do merging
@@ -91,13 +93,11 @@ namespace rivals {
 	if(this->num_elements < valid_size + first_index){
 	  valid_size = this->num_elements - first_index;
 	}
-	//T buffer2[MEMORY];
 	this->file.read((char*)buffer, valid_size*sizeof(T));
 	assert(this->file);
 	std::sort(buffer, buffer+valid_size);
 	std::fstream outfile;
 	outfile.open(f.c_str(), std::ios::out|std::ios::binary|std::ios::trunc);
-	//outfile.seekg(offset, std::ios::beg);
 	outfile.write(head, offset);
 	outfile.write((char*)buffer, valid_size*sizeof(T));
 	outfile.close();
@@ -112,7 +112,8 @@ namespace rivals {
         if(!out) printf("Could not open temp file for writing.\n");
 	//out.seekg(offset, std::ios::beg);
 	out.write(head, offset);
-	T buffer[CACHE];
+	//T buffer[CACHE];
+	std::auto_ptr<CacheBuffer> cachebuff(new CacheBuffer());
 
 	Capacity c1 = 0;
 	Capacity c2 = 0;
@@ -128,17 +129,17 @@ namespace rivals {
           for(count = 0; count < CACHE; count++){
 	    if(!avalid && !bvalid) break;
 	    if(avalid && !bvalid || (avalid && bvalid && cache1.at(c1) < cache2.at(c2))){
-              buffer[count] = cache1.at(c1);
+              cachebuff->buffer[count] = cache1.at(c1);
               c1++;
               avalid = (c1 < cache1.size());
               continue;
             }
-	    buffer[count] = cache2.at(c2);
+	    cachebuff->buffer[count] = cache2.at(c2);
             c2++;
             bvalid = (c2 < cache2.size());
           }
 	  if(count){
-	    out.write((char*)&buffer, count*sizeof(T));
+	    out.write((char*)&(cachebuff->buffer), count*sizeof(T));
           }
 	}while(count == CACHE);
 	
@@ -157,6 +158,14 @@ namespace rivals {
       char * head;
       std::fstream file;
       Capacity num_elements;
+
+      struct MemBuffer {
+	T buffer[MEMORY];
+      };
+
+      struct CacheBuffer{
+	T buffer[CACHE];
+      };
 
       struct Cargo{
       Cargo(Capacity n, std::string file) : num(n), filename(file) {}
