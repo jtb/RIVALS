@@ -1,6 +1,10 @@
 #ifndef ITERS_H_
 #define ITERS_H_
 
+#include <list>
+#include <memory>
+#include <exception>
+
 #include "iterator.h"
 #include "sample.h"
 #include "range.h"
@@ -15,85 +19,61 @@
 
 namespace rivals {
 
-  class Chain {
+  class no_own : public std::exception
+    {
+    public:
+      virtual const char* what() const throw();
+    };
+
+  class Node {
   public:
-    Iterator & range(std::string sample){
-      Sample *s = new Sample(sample);
-      v.push_back(s);
-      return *s;
-    }
-    Iterator & range(std::string sample, std::string chrom){
-      Sample *s = new Sample(sample, chrom);
-      v.push_back(s);
-      return *s;
-    }
-    Iterator & range(std::string sample, std::string chrom, Domain start, Domain stop){
-      Range *r = new Range(sample, chrom, start, stop);
-      v.push_back(r);
-      return *r;
-    }
-    Iterator & range(std::string sample, std::string chrom, Domain point){
-      Range *r = new Range(sample, chrom, point);
-      v.push_back(r);
-      return *r;
-    }
-    Iterator & merge(Iterator & a, Iterator & b){
-      Merge * m = new Merge(a, b);
-      v.push_back(m);
-      return *m;
-    }
-    Iterator & flatten(Iterator & a){
-      Flatten * f = new Flatten(a);
-      v.push_back(f);
-      return *f;
-    }
-    Iterator & clique(Iterator & a, Capacity minOverlap){
-      Clique * c = new Clique(a, minOverlap);
-      v.push_back(c);
-      return *c;
-    }
-    Iterator & no_nests(Iterator & a){
-      NoNests * nn = new NoNests(a);
-      v.push_back(nn);
-      return *nn;
-    }
-    Iterator & contained_in(Iterator & a, Iterator & b){
-      ContainedIn * ci = new ContainedIn(a,b);
-      v.push_back(ci);
-      return *ci;
-    }
-    Iterator & overlaps(Iterator & a, Iterator & b){
-      Overlaps * ov = new Overlaps(a,b);
-      v.push_back(ov);
-      return *ov;
-    }
-    Iterator & interval(std::string chr, Domain start, Domain stop){
-      IntervalIter * ii = new IntervalIter(chr,start,stop);
-      v.push_back(ii);
-      return *ii;
-    }
-    Iterator & get_strand(Iterator & a, int str){
-      GetStrand * gs = new GetStrand(a, str);
-      v.push_back(gs);
-      return *gs;
-    }
-    Iterator & set_strand(Iterator & a, int str){
-      SetStrand * ss = new SetStrand(a, str);
-      v.push_back(ss);
-      return *ss;
+  Node(Iterator * i) 
+    : iter(i), left_child(0), right_child(0) {
+      printf("Creating NODE %zu\n", (size_t)this);
     }
     
-    ~Chain(){
-      for(size_t i = 0; i < v.size(); i++){
-	printf("deleting %zu\n", i);
-	delete v.at(i);
-      }
+  Node(Iterator * i, std::auto_ptr<Node> n)
+    : iter(i), left_child(n), right_child(0) {
+      printf("Creating NODE %zu\n", (size_t)this);
+      n.reset(0);
     }
     
+  Node(Iterator * i, std::auto_ptr<Node> n, std::auto_ptr<Node> m)
+    : iter(i), left_child(n), right_child(m){
+      printf("Creating NODE %zu\n", (size_t)this);
+      n.reset(0);
+      m.reset(0);
+    }
+    
+    ~Node(){
+      printf("Deleting NODE %zu\n", (size_t)this);
+    }
+
+    void saveAsBED() {
+      return iter->saveAsBED();
+    }
+
+    std::auto_ptr<Iterator> iter;
+
   private:
-    std::vector<Iterator *> v;
+    std::auto_ptr<Node> left_child;
+    std::auto_ptr<Node> right_child;
   };
 
+  std::auto_ptr<Node> range(std::string sample);
+  std::auto_ptr<Node> range(std::string sample, std::string chrom);
+  std::auto_ptr<Node> range(std::string sample, std::string chrom, Domain start, Domain stop);
+  std::auto_ptr<Node> range(std::string sample, std::string chrom, Domain point);
+  std::auto_ptr<Node> merge(std::auto_ptr<Node> a, std::auto_ptr<Node> b);
+  std::auto_ptr<Node> flatten(std::auto_ptr<Node> a);
+  std::auto_ptr<Node> clique(std::auto_ptr<Node> a, Capacity minOverlap);
+  std::auto_ptr<Node> no_nests(std::auto_ptr<Node> a);
+  std::auto_ptr<Node> contained_in(std::auto_ptr<Node> a, std::auto_ptr<Node> b);
+  std::auto_ptr<Node> overlaps(std::auto_ptr<Node> a, std::auto_ptr<Node> b);
+  std::auto_ptr<Node> interval(std::string chr, Domain start, Domain stop);
+  std::auto_ptr<Node> get_strand(std::auto_ptr<Node> a, int str);
+  std::auto_ptr<Node> set_strand(std::auto_ptr<Node> a, int str);
+  
 }
 
 #endif

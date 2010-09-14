@@ -1,6 +1,6 @@
 #include <iostream>
 #include "file_utils.h"
-#include "iterators.h"
+#include "iterator.h"
 
 using namespace std;
 namespace rivals {

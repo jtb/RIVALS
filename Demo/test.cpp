@@ -23,10 +23,13 @@ int main(){
     importData(bed, "csample");
   }
   
-  Chain c;
+  //Chain c;
   //c.range("csample").saveAsBED();
-  c.overlaps(c.flatten(c.range("csample")), c.clique(c.range("csample"), 3)).saveAsBED();
+  //c.overlaps(c.flatten(c.range("csample")), c.clique(c.range("csample"), 3)).saveAsBED();
   
+  overlaps(flatten(range("csample")), clique(range("csample"), 3))->saveAsBED();
+  //Chain::Instance().setEmpty();
+  printf("Got it!\n");
   /**
   Chain c;
   //Sample s1("bsample");
