@@ -7,7 +7,7 @@
 #include "typedef.h"
 
 namespace rivals {
-  class BEDfile;
+  class GenomeFile;
 
   bool getMidpoint(Capacity low, Capacity high, Capacity & mp);
 
@@ -16,9 +16,9 @@ namespace rivals {
 
   bool readHeader(std::string sample, std::string & version, off_t & offset, Capacity & num_elements);
 
-  void importData(BEDfile & bed, std::string sample);
+  void importData(GenomeFile & gf, std::string sample);
 
-  bool rivalWriter(BEDfile & bed, std::string sample);
+  bool rivalWriter(GenomeFile & gf, std::string sample);
   void indexNodes(std::string sample);
 
   std::string fileFromSample(std::string sample);

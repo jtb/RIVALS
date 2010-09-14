@@ -1,5 +1,5 @@
-#ifndef BED_FILE_H_
-#define BED_FILE_H_
+#ifndef GFF_FILE_H_
+#define GFF_FILE_H_
 
 #include <fstream>
 #include <string>
@@ -11,10 +11,10 @@
 namespace rivals {
   class Interval;
 
-  class BEDfile : public GenomeFile {
+  class GFFfile : public GenomeFile  {
   public:
-    BEDfile(std::string filename);
-    ~BEDfile();
+    GFFfile(std::string filename);
+    ~GFFfile();
 
     bool next(std::string & chr, Interval & c);
     const std::map<std::string, std::pair<Capacity, Capacity> > & getChrMap() const;

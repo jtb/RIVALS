@@ -2,7 +2,7 @@
 #include <sstream>
 #include <iostream>
 
-#include "bedfile.h"
+#include "genomefile.h"
 #include "file_utils.h"
 #include "utils.h"
 #include "interval.h"
@@ -155,8 +155,8 @@ namespace rivals {
     }
   }
 
-  void importData(BEDfile & bed, string sample){
-    if(!rivalWriter(bed, sample)){
+  void importData(GenomeFile & gf, string sample){
+    if(!rivalWriter(gf, sample)){
       //sort sample.riv
       string version;
       off_t offset;
@@ -167,12 +167,12 @@ namespace rivals {
     indexNodes(sample);
   }
 
-  bool rivalWriter(BEDfile & bed, string sample){
+  bool rivalWriter(GenomeFile & gf, string sample){
     
     map<string, pair<Capacity, Capacity> > chrmap;
     vector<string> chroms;
     bool sorted = true;
-    Capacity bed_size = 0;
+    Capacity gf_size = 0;
     string curr_chr = "";
     Capacity curr_chr_start = 0;
     
@@ -186,7 +186,7 @@ namespace rivals {
 
       off_t offset = 8 + sizeof(off_t) + sizeof(Capacity);
       file.write((char *)&offset, sizeof(off_t));
-      file.write((char *)&bed_size, sizeof(Capacity));
+      file.write((char *)&gf_size, sizeof(Capacity));
 
       Interval arr[CACHE];
       string chr;
@@ -196,7 +196,7 @@ namespace rivals {
       int count;
       do{
 	for(count = 0; count < CACHE; count++){
-	  if(!bed.next(chr, c)) break;
+	  if(!gf.next(chr, c)) break;
 	  
 	  
 	  if(chrmap.find(chr) == chrmap.end()){
@@ -226,17 +226,16 @@ namespace rivals {
       }while(count == CACHE);
       
       //prepare chrmap
-      //Capacity bed_size = 0;
       for(size_t i = 0; i < chroms.size(); i++){
 	Capacity len = chrmap[chroms.at(i)].first;
-	chrmap[chroms.at(i)].first = bed_size;
-	bed_size = bed_size + len;
-	chrmap[chroms.at(i)].second = bed_size;
+	chrmap[chroms.at(i)].first = gf_size;
+	gf_size = gf_size + len;
+	chrmap[chroms.at(i)].second = gf_size;
       }
 
       file.seekg(8 + sizeof(off_t), ios::beg);
       if(!file) printf("could not write header to file.\n");
-      file.write((char *)&bed_size, sizeof(Capacity));
+      file.write((char *)&gf_size, sizeof(Capacity));
 
       printf("Sorted is %d\n", (int)sorted);
 
