@@ -27,7 +27,12 @@ int main(){
   //c.range("csample").saveAsBED();
   //c.overlaps(c.flatten(c.range("csample")), c.clique(c.range("csample"), 3)).saveAsBED();
   
-  overlaps(flatten(range("csample")), clique(range("csample"), 3))->saveAsBED();
+  //saveAsRival("bad", range("csample"));
+  //overlaps(flatten(range("csample")), clique(range("csample"), 3))->saveAsBED();
+  saveAsRival("bad", overlaps(flatten(range("csample")), clique(range("csample"), 3)));
+  
+  saveAsBED("-", range("bad"));
+  
   //Chain::Instance().setEmpty();
   printf("Got it!\n");
   /**

@@ -49,8 +49,8 @@ namespace rivals {
       printf("Deleting NODE %zu\n", (size_t)this);
     }
 
-    void saveAsBED() {
-      return iter->saveAsBED();
+    void saveAsBED(std::string filename = "") {
+      return iter->saveAsBED(filename);
     }
 
     std::auto_ptr<Iterator> iter;
@@ -73,7 +73,9 @@ namespace rivals {
   std::auto_ptr<Node> interval(std::string chr, Domain start, Domain stop);
   std::auto_ptr<Node> get_strand(std::auto_ptr<Node> a, int str);
   std::auto_ptr<Node> set_strand(std::auto_ptr<Node> a, int str);
-  
+
+  std::string saveAsBED(std::string filename, std::auto_ptr<Node> a);
+  std::string saveAsRival(std::string base, std::auto_ptr<Node> a);
 }
 
 #endif
