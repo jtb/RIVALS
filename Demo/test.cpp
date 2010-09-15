@@ -18,7 +18,7 @@ int main(){
   //importData(bed2, "asample2");
 
   struct stat stFileInfo;
-  if(1 || stat("csample.riv",&stFileInfo)){//file does not exist 
+  if(stat("csample.riv",&stFileInfo)){//file does not exist 
     BEDfile bed("Data/testOverlap.bed");
     importData(bed, "csample");
   }
@@ -29,9 +29,9 @@ int main(){
   
   //saveAsRival("bad", range("csample"));
   //overlaps(flatten(range("csample")), clique(range("csample"), 3))->saveAsBED();
-  saveAsRival("bad", overlaps(flatten(range("csample")), clique(range("csample"), 3)));
+  saveAsRival("good", overlaps(flatten(range("csample")), clique(range("csample"), 3)));
   
-  saveAsBED("-", range("bad"));
+  saveAsBED("-", range("good"));
   
   //Chain::Instance().setEmpty();
   printf("Got it!\n");

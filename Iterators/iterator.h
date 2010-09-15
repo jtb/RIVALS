@@ -14,8 +14,6 @@ namespace rivals {
       chr_list.clear();
     }
     virtual ~Iterator(){}
-    virtual void saveAsBED(std::string filename = "");
-    virtual void saveAsRival(std::string sample);
 
     virtual bool next(std::string & chrom, Interval & intv) = 0;
     virtual void setChr(std::string chrom) = 0;
@@ -23,7 +21,6 @@ namespace rivals {
     virtual const ChromList & getChrList(){
       return chr_list;
     }
-    
     
     bool has_score;
     int score;

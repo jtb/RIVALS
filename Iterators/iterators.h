@@ -49,10 +49,6 @@ namespace rivals {
       printf("Deleting NODE %zu\n", (size_t)this);
     }
 
-    void saveAsBED(std::string filename = "") {
-      return iter->saveAsBED(filename);
-    }
-
     std::auto_ptr<Iterator> iter;
 
   private:
