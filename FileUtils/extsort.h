@@ -27,8 +27,10 @@ namespace rivals {
 	size = file.tellg();
 	file.seekg(0, std::ios::beg);
 	num_elements = (size - offset)/sizeof(T);
+#ifdef DEBUG
 	std::cout << "number of elements is " << num_elements << std::endl;
-	
+#endif	
+
 	head = new char[offset];
 	file.read(head, offset);
 

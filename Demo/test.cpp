@@ -1,6 +1,7 @@
 #include <iostream>
 #include <sys/stat.h>
 #include "bedfile.h"
+#include "gfffile.h"
 #include "file_utils.h"
 #include "iterators.h"
 
@@ -22,7 +23,12 @@ int main(){
     BEDfile bed("Data/testOverlap.bed");
     importData(bed, "csample");
   }
-  
+
+  printf("import gff\n");
+  GFFfile gff("Data/iSample.gff");
+  importData(gff, "gsample");
+  printf("done\n");
+
   //Chain c;
   //c.range("csample").saveAsBED();
   //c.overlaps(c.flatten(c.range("csample")), c.clique(c.range("csample"), 3)).saveAsBED();
@@ -33,6 +39,11 @@ int main(){
   
   saveAsBED("-", range("good"));
   
+  saveAsBED("-", clique(range("gsample"), 10));
+
+  printf("save gff to bed\n");
+  saveAsBED("gff.bed", range("gsample"));
+
   //Chain::Instance().setEmpty();
   
   /**
