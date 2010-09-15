@@ -34,7 +34,7 @@ int main(){
   saveAsBED("-", range("good"));
   
   //Chain::Instance().setEmpty();
-  printf("Got it!\n");
+  
   /**
   Chain c;
   //Sample s1("bsample");

@@ -237,7 +237,9 @@ namespace rivals {
       if(!file) printf("could not write header to file.\n");
       file.write((char *)&gf_size, sizeof(Capacity));
 
+#ifdef DEBUG
       printf("Sorted is %d\n", (int)sorted);
+#endif
 
       writeChrMap(chrmap, sample);
       

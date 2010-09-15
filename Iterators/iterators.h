@@ -29,24 +29,32 @@ namespace rivals {
   public:
   Node(Iterator * i) 
     : iter(i), left_child(0), right_child(0) {
+#ifdef DEBUG
       printf("Creating NODE %zu\n", (size_t)this);
+#endif
     }
     
   Node(Iterator * i, std::auto_ptr<Node> n)
     : iter(i), left_child(n), right_child(0) {
+#ifdef DEBUG
       printf("Creating NODE %zu\n", (size_t)this);
+#endif
       n.reset(0);
     }
     
   Node(Iterator * i, std::auto_ptr<Node> n, std::auto_ptr<Node> m)
     : iter(i), left_child(n), right_child(m){
+#ifdef DEBUG
       printf("Creating NODE %zu\n", (size_t)this);
+#endif
       n.reset(0);
       m.reset(0);
     }
     
     ~Node(){
+#ifdef DEBUG
       printf("Deleting NODE %zu\n", (size_t)this);
+#endif
     }
 
     std::auto_ptr<Iterator> iter;
