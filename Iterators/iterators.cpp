@@ -83,7 +83,7 @@ namespace rivals {
   }
 
   std::string saveAsBED(std::auto_ptr<Node> a){
-    saveAsBED("-", a);
+    return saveAsBED("-", a);
   }
 
   std::string saveAsBED(std::string filename, std::auto_ptr<Node> a){

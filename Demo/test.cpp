@@ -10,45 +10,20 @@ using namespace std;
 using namespace rivals;
 
 int main(){
-  //BEDfile bed1("Data/test_sorted.bed");
-  //importData(bed1, "bsample2");
-
-  //cout << "intervals is " << sizeof(Interval) << endl;
-  //cout << "cIntervals is " << sizeof(cInterval) << endl;
-
-  //BEDfile bed2("Data/itree.bed");
-  //importData(bed2, "asample2");
-
-  /**
-  struct stat stFileInfo;
-  if(stat("csample.riv",&stFileInfo)){//file does not exist 
-    BEDfile bed("Data/testOverlap.bed");
-    importData(bed, "csample");
-  }
-  **/
-
   importBED("Data/testOverlap.bed", "csample");
-
-  /**
-  printf("import gff\n");
-  GFFfile gff("Data/iSample.gff");
-  importData(gff, "gsample");
-  printf("done\n");
-  **/
 
   importGFF("Data/iSample.gff", "gsample", true);
 
-  //Chain c;
   //c.range("csample").saveAsBED();
   //c.overlaps(c.flatten(c.range("csample")), c.clique(c.range("csample"), 3)).saveAsBED();
   
   //saveAsRival("bad", range("csample"));
   //overlaps(flatten(range("csample")), clique(range("csample"), 3))->saveAsBED();
+  
   saveAsRival("good", overlaps(flatten(range("csample")), clique(range("csample"), 3)));
+  saveAsBED(range("good"));
   
-  saveAsBED("-", range("good"));
-  
-  saveAsBED("-", clique(range("gsample"), 10));
+  saveAsBED(clique(range("gsample"), 10));
 
   printf("save gff to bed\n");
   saveAsBED("gff.bed", range("gsample"));
