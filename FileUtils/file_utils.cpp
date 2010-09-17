@@ -112,6 +112,10 @@ namespace rivals {
   }
   
   namespace {
+    struct CacheBuffer{
+      Interval arr[CACHE];
+    };
+
     bool indexNodesHelper(CenteredCache<Interval> & cc, Capacity low, Capacity high, Domain & value){
       Capacity root;
       if(getMidpoint(low, high, root)){
@@ -188,7 +192,8 @@ namespace rivals {
       file.write((char *)&offset, sizeof(off_t));
       file.write((char *)&gf_size, sizeof(Capacity));
 
-      Interval arr[CACHE];
+      //Interval arr[CACHE];
+      auto_ptr<CacheBuffer> cachebuff(new CacheBuffer());
       string chr;
       Interval c;
       Interval prev;
@@ -216,12 +221,12 @@ namespace rivals {
 	      sorted = false;
 	    }
 	  }
-	  arr[count] = c;
+	  cachebuff->arr[count] = c;
 	  curr_chr = chr;
 	  prev = c;
 	}
 	if(count){
-          file.write((char *)&arr, count*sizeof(Interval));
+          file.write((char *)&(cachebuff->arr), count*sizeof(Interval));
 	}
       }while(count == CACHE);
       

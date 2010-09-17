@@ -5,7 +5,6 @@
 #include <string>
 #include <map>
 
-#include "typedef.h"
 #include "genomefile.h"
 
 namespace rivals {
@@ -17,15 +16,10 @@ namespace rivals {
     ~BEDfile();
 
     bool next(std::string & chr, Interval & c);
-    const std::map<std::string, std::pair<Capacity, Capacity> > & getChrMap() const;
 
   private:
-    Capacity count;
-    std::map<std::string, std::pair<Capacity, Capacity> > chrmap;
     std::ifstream file_in;
     std::string line;
-    std::string curr_chr;
-    Capacity curr_chr_start;
   };
 
 }

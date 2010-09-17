@@ -1,6 +1,7 @@
 #include <sstream>
 #include <vector>
 
+#include "typedef.h"
 #include "interval.h"
 #include "utils.h"
 #include "bedfile.h"
@@ -8,7 +9,7 @@
 using namespace std;
 
 namespace rivals {
-  BEDfile::BEDfile(string filename) : count(0), file_in(filename.c_str()), curr_chr(""), curr_chr_start(0) {
+  BEDfile::BEDfile(string filename) : file_in(filename.c_str()) {
     if(!file_in.is_open()){
       printf("Could not open bed file %s for reading.\n", filename.c_str());
     }
@@ -16,10 +17,6 @@ namespace rivals {
 
   BEDfile::~BEDfile(){
     file_in.close();
-  }
-
-  const map<string, pair<Capacity, Capacity> > &  BEDfile::getChrMap() const {
-    return chrmap;
   }
   
   bool BEDfile::next(string & chr, Interval & c){
@@ -50,25 +47,8 @@ namespace rivals {
 	  str = PLUS;
 	}
       }
-      
-      if(chr.compare(curr_chr)){//curr_chr != chr
-	if(curr_chr.compare("")){// curr_chr != ""
-	  pair<Capacity, Capacity> temp(curr_chr_start, count);
-	  chrmap.insert(pair<string, pair<Capacity, Capacity> >(curr_chr, temp));
-	}
-	curr_chr = chr;
-	curr_chr_start = count;
-      }
-      ++count;
-
       c.setInterval(start, stop, str);
       return true;
-    }
-
-    //Clean up last chr
-    if(curr_chr.compare("")){
-      pair<Capacity, Capacity> temp(curr_chr_start, count);
-      chrmap.insert(pair<string, pair<Capacity, Capacity> >(curr_chr, temp));
     }
     
     return false;

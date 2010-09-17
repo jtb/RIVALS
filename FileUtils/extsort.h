@@ -108,7 +108,9 @@ namespace rivals {
       }
 
       Capacity merge(std::string file1, std::string file2, Capacity siz1, Capacity siz2, std::string fileOut){
+#ifdef DEBUG
 	printf("merging %s and %s\n", file1.c_str(), file2.c_str());
+#endif
 	std::fstream out;
 	out.open("ExtSortTemp.temp", std::ios::out | std::ios::binary | std::ios::trunc);
         if(!out) printf("Could not open temp file for writing.\n");
