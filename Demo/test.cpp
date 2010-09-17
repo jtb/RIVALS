@@ -1,9 +1,10 @@
 #include <iostream>
 #include <sys/stat.h>
-#include "bedfile.h"
-#include "gfffile.h"
-#include "file_utils.h"
-#include "iterators.h"
+//#include "bedfile.h"
+//#include "gfffile.h"
+//#include "file_utils.h"
+//#include "iterators.h"
+#include "rivals.h"
 
 using namespace std;
 using namespace rivals;
@@ -18,16 +19,24 @@ int main(){
   //BEDfile bed2("Data/itree.bed");
   //importData(bed2, "asample2");
 
+  /**
   struct stat stFileInfo;
   if(stat("csample.riv",&stFileInfo)){//file does not exist 
     BEDfile bed("Data/testOverlap.bed");
     importData(bed, "csample");
   }
+  **/
 
+  importBED("Data/testOverlap.bed", "csample");
+
+  /**
   printf("import gff\n");
   GFFfile gff("Data/iSample.gff");
   importData(gff, "gsample");
   printf("done\n");
+  **/
+
+  importGFF("Data/iSample.gff", "gsample", true);
 
   //Chain c;
   //c.range("csample").saveAsBED();

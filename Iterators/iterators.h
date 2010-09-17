@@ -100,6 +100,7 @@ namespace rivals {
   std::auto_ptr<Node> set_strand(std::auto_ptr<Node> a, int str);
 
   std::string saveAsBED(std::string filename, std::auto_ptr<Node> a);
+  std::string saveAsBED(std::auto_ptr<Node> a);
   std::string saveAsRival(std::string base, std::auto_ptr<Node> a);
 }
 
