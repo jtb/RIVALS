@@ -32,8 +32,6 @@
 #include "merge.h"
 #include "flatten.h"
 #include "clique.h"
-#include "no_nests.h"
-#include "nested.h"
 #include "contained_in.h"
 #include "contains.h"
 #include "interval_iter.h"
@@ -87,19 +85,21 @@ namespace rivals {
     std::auto_ptr<Node> right_child;
   };
 
+  std::auto_ptr<Node> interval(std::string chr, Domain start, Domain stop);
   std::auto_ptr<Node> range(std::string sample);
   std::auto_ptr<Node> range(std::string sample, std::string chrom);
   std::auto_ptr<Node> range(std::string sample, std::string chrom, Domain start, Domain stop);
   std::auto_ptr<Node> range(std::string sample, std::string chrom, Domain point);
+ 
   std::auto_ptr<Node> merge(std::auto_ptr<Node> a, std::auto_ptr<Node> b);
+  
   std::auto_ptr<Node> flatten(std::auto_ptr<Node> a);
   std::auto_ptr<Node> clique(std::auto_ptr<Node> a, Capacity minOverlap);
-  std::auto_ptr<Node> no_nests(std::auto_ptr<Node> a);
-  std::auto_ptr<Node> nested(std::auto_ptr<Node> a);
+    
   std::auto_ptr<Node> contained_in(std::auto_ptr<Node> a, std::auto_ptr<Node> b);
   std::auto_ptr<Node> contains(std::auto_ptr<Node> a, std::auto_ptr<Node> b);
   std::auto_ptr<Node> overlaps(std::auto_ptr<Node> a, std::auto_ptr<Node> b);
-  std::auto_ptr<Node> interval(std::string chr, Domain start, Domain stop);
+    
   std::auto_ptr<Node> get_strand(std::auto_ptr<Node> a, int str);
   std::auto_ptr<Node> set_strand(std::auto_ptr<Node> a, int str);
 
