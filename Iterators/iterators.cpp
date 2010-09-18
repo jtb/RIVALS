@@ -60,10 +60,19 @@ namespace rivals {
     if(!a.get()) throw no_own();
     return std::auto_ptr<Node>(new Node(new NoNests(*(a->iter)), a));
   }
+  std::auto_ptr<Node> nested(std::auto_ptr<Node> a){
+    if(!a.get()) throw no_own();
+    return std::auto_ptr<Node>(new Node(new Nested(*(a->iter)), a));
+  }
   std::auto_ptr<Node> contained_in(std::auto_ptr<Node> a, std::auto_ptr<Node> b){
     if(!a.get()) throw no_own();
     if(!b.get()) throw no_own();
     return std::auto_ptr<Node>(new Node(new ContainedIn(*(a->iter),*(b->iter)), a, b));
+  }
+  std::auto_ptr<Node> contains(std::auto_ptr<Node> a, std::auto_ptr<Node> b){
+    if(!a.get()) throw no_own();
+    if(!b.get()) throw no_own();
+    return std::auto_ptr<Node>(new Node(new Contains(*(a->iter),*(b->iter)), a, b));
   }
   std::auto_ptr<Node> overlaps(std::auto_ptr<Node> a, std::auto_ptr<Node> b){
     if(!a.get()) throw no_own();
