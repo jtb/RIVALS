@@ -28,7 +28,7 @@ int main(){
      range(sample)                   <-- loads entire rival file
      range(sample, chr)              <-- only loads specified chromosome
      range(sample, chr, start, stop) <-- only loads intervals that overlap the range
-     range(sample, chr, point)       <-- loads only loads intervals that overlap the point
+     range(sample, chr, point)       <-- only loads intervals that overlap the point
      Note 1: The RIVAL format allows you to efficiently jump to a particular chromosome or range
      instead of doing a full linear traversal of all intervals.
      Note 2: The contents of the file don't actually get loaded into memory, so the range iterator
