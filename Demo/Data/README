@@ -1,0 +1,16 @@
+Descriptiion of data:
+
+BED files
+---------------
+test.bed
+Demo data from SICER
+http://home.gwu.edu/~wpeng/Software.htm
+
+For some larger demo bed files (CTCF, NRSF, STAT1), see
+http://dir.nhlbi.nih.gov/papers/lmi/epigenomes/sissrs/
+
+GFF files
+-----------------
+chrX.gff
+Demo data (chromosome X) from fjoin paper
+http://www.ncbi.nlm.nih.gov/pubmed/17061921

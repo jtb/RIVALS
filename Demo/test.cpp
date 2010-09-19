@@ -1,77 +1,86 @@
 #include <iostream>
-#include <sys/stat.h>
-//#include "bedfile.h"
-//#include "gfffile.h"
-//#include "file_utils.h"
-//#include "iterators.h"
+#include <string>
+
 #include "rivals.h"
 
 using namespace std;
 using namespace rivals;
 
 int main(){
-  importBED("Data/testOverlap.bed", "csample");
 
-  importGFF("Data/iSample.gff", "gsample", true);
+  /* Import files into RIVAL format
+     First argument is the name of the text file(BED or GFF format).
+     Second argument is name of sample.
+     Output is two files, sample.riv and sample.map, where sample is the name supplied in argument 2.
+     Note 1: If a .map and .riv file are already present, then it will not re-import them.
+     Note 2: Importing requires sorting.  If the intervals are already sorted by genomic order, they will not 
+     need to be sorted during import.
+   */
 
-  //c.range("csample").saveAsBED();
-  //c.overlaps(c.flatten(c.range("csample")), c.clique(c.range("csample"), 3)).saveAsBED();
+  cout << "Importing Files..." << endl << endl;
+  string rival1 = "bed_test";
+  string rival2 = "gff_test";
+  importBED("Data/test.bed", rival1);
+  importGFF("Data/chrX.gff", rival2);
+
+  /* Source Iterator
+     You can load all or parts of the RIVAL file using the "range" iterator
+     range(sample)                   <-- loads entire rival file
+     range(sample, chr)              <-- only loads specified chromosome
+     range(sample, chr, start, stop) <-- only loads intervals that overlap the range
+     range(sample, chr, point)       <-- loads only loads intervals that overlap the point
+     Note 1: The RIVAL format allows you to efficiently jump to a particular chromosome or range
+     instead of doing a full linear traversal of all intervals.
+     Note 2: The contents of the file don't actually get loaded into memory, so the range iterator
+     will work on files larger than the available memory
   
-  //saveAsRival("bad", range("csample"));
-  //overlaps(flatten(range("csample")), clique(range("csample"), 3))->saveAsBED();
+     Chaining Iterators
+     An iterator performs some action on 1 or 2 streams of sorted intervals and 
+     outputs the results as a stream of intervals sorted by genomic location.  Therefore,
+     multiple iterators can be chained together to perform complicated tasks.  See manual for
+     description of iterators.
+
+     Sink Iterator
+     You can save the results as a text file (BED) or as a RIVAL file.  The RIVAL file can be used in further
+     iterator chains without importing.  The BED file will need to be imported if you wish to use it further.
+     saveAsBED
+     saveAsRival
+  */
+
+  /** Examples **/
+  //Save to BED file
+  cout << "Example 1:" << endl;
+  saveAsBED("gff.bed", range(rival2));
+  cout << "Saved to gff.bed" << endl << endl;
+
+  //Print to standard out all intervals that overlap chr8:28510032-31173640
+  cout << "Example 2:" << endl;
+  saveAsBED(range(rival1, "chr8", 28510032, 31173640));
+  cout << endl;
+
+  //Do the same as above, but save to a Rival file.  Print out regions after changing strands to '-'
+  cout << "Example 3:" << endl;
+  saveAsRival("output", range(rival1, "chr8", 28510032, 31173640));
+  cout << "Saved to output.riv and output.map" << endl;
+  saveAsBED(set_strand(range("output"), MINUS));
+  cout << endl;
+
+  //These two methods should give identical results, but one is more efficent
+  cout << "Example 4:" << endl;
+  //Method 1: Uses range to find intervals quickly
+  cout << "Method 1:" << endl;
+  saveAsBED(range(rival2, "chrX", 100165880, 100168052));
+  //Method 2: Finds intervals in rival2 that overlap the specified interval.  Requires a linear
+  //traversal overl rival2.
+  cout << "Method 2:" << endl;
+  saveAsBED(overlaps(range(rival2), interval("chrX", 100165880, 100168052)));
+  cout << endl;
+
+  //Find the intersection of two interval graphs
+  //First, we "flatten" the two interval graphs.  Next we merge the two lists of intervals
+  //together and find all regions that overlap by 2.
+  cout << "Example 5:" << endl;
+  saveAsBED( clique( merge( flatten( range(rival1) ), flatten( range(rival2) )) , 2 ) );
   
-  saveAsRival("good", overlaps(flatten(range("csample")), clique(range("csample"), 3)));
-  saveAsBED(range("good"));
-  
-  saveAsBED(clique(range("gsample"), 10));
-
-  printf("save gff to bed\n");
-  saveAsBED("gff.bed", range("gsample"));
-
-  //Chain::Instance().setEmpty();
-  
-  /**
-  Chain c;
-  //Sample s1("bsample");
-  //Sample s2("bsample");
-  //c.flatten(c.clique(s, 2)).saveAsBED();
-  //c.merge(s,s).saveAsBED();
-
-  //chr8 40568857 405688824 .
-  //chr8 78193723 781937484 .
-  //chr8 85059549 850595744 .
-  //chr8 101641327 1016413524 .
-  //chr8 125556826 1255568374 .
-  //chr8 127407510 127407535 .
-  //c.clique(c.merge(c.range("bsample", "chr8", 40568857, 227407535),c.range("bsample", "chr8", 40568857, 227407535)), 4).saveAsBED();
-
-  //c.no_nests(c.range("asample")).saveAsBED();
-  //c.contained_in(c.flatten(c.range("asample")), c.range("asample")).saveAsBED();
-  //c.range("asample", "chr1", 16, 22).saveAsBED();
-  //c.contained_in(c.get_strand(c.set_strand(c.range("asample", "chr1", 16, 22), MINUS), MINUS),c.interval("chr1", 16, 22)).saveAsBED();
-
-  c.range("bsample", "chr8", 40568857, 41728151).saveAsBED();
-  cout << endl << endl;
-  c.overlaps(c.range("bsample"), c.interval("chr8", 40568857, 41728151)).saveAsBED();
-    
-  //Clique c(s, 5);
-  //c.saveAsBED();
-
-  //Merge(Sample("asample"), Sample("asample")).saveAsBED();
-  //Sample s("asample");
-  //s.saveAsBED();
-  //cout << endl << endl;
-  //Flatten f(s);
-  //f.saveAsBED();
-
-  //Range r("bsample", "chr3", 1500000, 3000000);
-  //Sample s("asample");
-  //Merge m(r,s);
-  //m.saveAsBED();
-
-  //cout << endl << endl;
-  //Range z("asample", "chr1", 19);
-  //z.saveAsBED();
-  **/
   return 0;
 }
