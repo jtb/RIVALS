@@ -1,0 +1,9 @@
+To compile:
+
+You will need to have CMake installed: http://www.cmake.org/
+
+Type "cmake ." in this directory (assuming cmake is installed), and then run "make"
+
+To run:
+Go to the Demo director and type ./rivalsDemo.  You should get the following output
+
