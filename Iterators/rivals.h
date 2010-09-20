@@ -29,6 +29,7 @@ namespace rivals {
     
   void importBED(std::string source, std::string outbase, bool overwrite = false);
   void importGFF(std::string source, std::string outbase, bool overwrite = false);
+  void importTAB(std::string source, std::string outbase, bool overwrite = false);
 
 }
 

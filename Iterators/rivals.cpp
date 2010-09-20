@@ -23,6 +23,7 @@
 
 #include "bedfile.h"
 #include "gfffile.h"
+#include "tabdelim.h"
 #include "rivals.h"
 
 namespace rivals {
@@ -44,6 +45,16 @@ namespace rivals {
     if(overwrite || stat(fileFromSample(outbase).c_str(),&riv) || stat(chrFromSample(outbase).c_str(),&map)){
       GFFfile gff(source);
       importData(gff, outbase);
+    }
+  }
+
+  void importTAB(std::string source, std::string outbase, bool overwrite){
+    struct stat riv;
+    struct stat map;
+    //if overwrite is true OR one of the two rival files (.map and .riv) does not exist, then create new sample
+    if(overwrite || stat(fileFromSample(outbase).c_str(),&riv) || stat(chrFromSample(outbase).c_str(),&map)){
+      TabDelim tb(source);
+      importData(tb, outbase);
     }
   }
 }
