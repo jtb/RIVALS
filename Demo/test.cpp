@@ -2,12 +2,13 @@
 #include <string>
 
 #include "rivals.h"
+#include "mem.h"
 
 using namespace std;
 using namespace rivals;
 
 int main(){
-
+  {
   /* Import files into RIVAL format
      First argument is the name of the text file(BED or GFF format).
      Second argument is name of sample.
@@ -81,6 +82,8 @@ int main(){
   //together and find all regions that overlap by 2.
   cout << "Example 5:" << endl;
   saveAsBED( clique( merge( flatten( range(rival1) ), flatten( range(rival2) )) , 2 ) );
-  
+  }
+
+  printLeak();
   return 0;
 }
