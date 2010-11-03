@@ -5,11 +5,7 @@
 #include "eval.h"
 #include "mem.h"
 
-extern "C" {
-#include "includes/lua.h"
-#include "includes/lualib.h"
-#include "includes/lauxlib.h"
-}
+#include "includes/lua.hpp"
 
 static int importBED(lua_State * L){
   std::string arg1 = lua_tostring(L,1);
@@ -76,7 +72,7 @@ static int merge(lua_State * L){
   return 1;
 }
 
-int main(){
+int main(int argc, char *argv[]){
   {
     lua_State *L = lua_open();
 
@@ -88,8 +84,9 @@ int main(){
     lua_register(L, "interval", interval);
     lua_register(L, "merge", merge);
     
-    luaL_dofile(L, "test.lua");
-    
+    //luaL_dofile(L, "test.lua");
+    if(luaL_dofile(L, argv[1])!=0) fprintf(stderr,"%s\n",lua_tostring(L,-1));
+
     lua_close(L);
   }
   printLeak();

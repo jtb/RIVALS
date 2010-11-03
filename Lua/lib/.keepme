@@ -1,0 +1,2 @@
+This file makes sure that the lib folder exists.  
+The user will place the correct liblua.dylib file for his or her system here.
