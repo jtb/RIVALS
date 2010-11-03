@@ -8,10 +8,9 @@
 
 class Eval {
  public:
- Eval() : left_child(0), right_child(0) { printf("Creating Node\n"); }
+ Eval() : left_child(0), right_child(0) { }
 	
 	virtual ~Eval(){
-	  printf("delete node\n");
 		delete right_child;
 		right_child=0;
 		delete left_child;
