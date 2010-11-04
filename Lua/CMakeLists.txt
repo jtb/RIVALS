@@ -1,7 +1,35 @@
-include_directories(${RIVALS_SOURCE_DIR}/Utils ${RIVALS_SOURCE_DIR}/FileUtils ${RIVALS_SOURCE_DIR}/Iterators)
-
-link_directories (${RIVALS_BINARY_DIR}/Utils ${RIVALS_BINARY_DIR}/FileUtils ${RIVALS_BINARY_DIR}/Iterators /Users/barybrown/Rivals081710/Lua/lib)
-
-add_executable (luatest luatree.cpp) 
-
-target_link_libraries (luatest Utils FileUtils Iterators lua)
+add_library (Lua 
+lapi.c
+lauxlib.c
+lbaselib.c
+lcode.c
+ldblib.c
+ldebug.c
+ldo.c
+ldump.c
+lfunc.c
+lgc.c
+linit.c
+liolib.c
+llex.c
+lmathlib.c
+lmem.c
+loadlib.c
+lobject.c
+lopcodes.c
+loslib.c
+lparser.c
+lstate.c
+lstring.c
+lstrlib.c
+ltable.c
+ltablib.c
+ltm.c
+lua.c
+luac
+luac.c
+lundump.c
+lvm.c
+lzio.c
+print.c
+) 

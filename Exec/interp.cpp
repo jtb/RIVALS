@@ -5,7 +5,7 @@
 #include "eval.h"
 #include "mem.h"
 
-#include "includes/lua.hpp"
+#include "lua.hpp"
 
 static int importBED(lua_State * L){
   std::string arg1 = lua_tostring(L,1);
