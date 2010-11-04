@@ -134,5 +134,20 @@ namespace rivals {
     importData(rf, base);
     return base;
   }
+
+  Capacity countIntervals(std::auto_ptr<Node> a){
+    Capacity ans = 0;
+    std::set<std::string>::const_iterator it;
+    std::string chrom;
+    Interval c;
+    for(it = a->iter->getChrList().begin(); it != a->iter->getChrList().end(); ++it){
+      chrom = (*it);
+      a->iter->setChr(chrom);
+      while(a->iter->next(chrom, c)){
+	ans++;
+      }
+    }
+    return ans;
+  }
   
 }

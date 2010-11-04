@@ -110,4 +110,10 @@ std::string SaveAsRival(std::string base, Eval *n){
   return basename;
 }
 
+rivals::Capacity CountIntervals(Eval *n){
+  rivals::Capacity num_intervals = rivals::countIntervals(n->eval());
+  delete n;
+  return num_intervals;
+}
+
 #endif
