@@ -25,16 +25,44 @@ class Eval {
 		
 };
 
-class Range : public Eval {
+class Range1 : public Eval {
  public:
- Range(std::string samp) : Eval(), sample(samp) {}
-  ~Range(){}
+ Range1(std::string samp) : Eval(), sample(samp) {}
+  ~Range1(){}
 
   std::auto_ptr<rivals::Node> eval(){
     return rivals::range(sample);
   }
  private:
   std::string sample;
+};
+
+class Range2 : public Eval {
+ public:
+ Range2(std::string samp, std::string ch) : Eval(), sample(samp), chr(ch) {}
+  ~Range2(){}
+
+  std::auto_ptr<rivals::Node> eval(){
+    return rivals::range(sample, chr);
+  }
+ private:
+  std::string sample;
+  std::string chr;
+};
+
+class Range4 : public Eval {
+ public:
+ Range4(std::string samp, std::string ch, ptrdiff_t start, ptrdiff_t stop) : Eval(), sample(samp), chr(ch), begin(start), end(stop) {}
+  ~Range4(){}
+
+  std::auto_ptr<rivals::Node> eval(){
+    return rivals::range(sample, chr, begin, end);
+  }
+ private:
+  std::string sample;
+  std::string chr;
+  rivals::Domain begin;
+  rivals::Domain end;
 };
 
 class Interval : public Eval {

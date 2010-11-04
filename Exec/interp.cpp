@@ -50,10 +50,30 @@ static int saveAsRival(lua_State * L){
 }
 
 static int range(lua_State * L){
-  std::string sample = lua_tostring(L,1);
-  Eval * n = new Range(sample);
-  lua_pushlightuserdata(L, (void*)n);
-  return 1;
+  if(lua_gettop(L) == 1){
+    std::string sample = lua_tostring(L,1);
+    Eval * n = new Range1(sample);
+    lua_pushlightuserdata(L, (void*)n);
+    return 1;
+  }
+  if(lua_gettop(L) == 2){
+    std::string sample = lua_tostring(L,1);
+    std::string chr = lua_tostring(L,2);
+    Eval * n = new Range2(sample, chr);
+    lua_pushlightuserdata(L, (void*)n);
+    return 1;
+  }
+  if(lua_gettop(L) == 4){
+    std::string sample = lua_tostring(L,1);
+    std::string chr = lua_tostring(L,2);
+    ptrdiff_t start = lua_tointeger(L,3);
+    ptrdiff_t stop = lua_tointeger(L,4);
+    Eval * n = new Range4(sample, chr, start, stop);
+    lua_pushlightuserdata(L, (void*)n);
+    return 1;
+  }
+   
+  return 0;
 }
 
 static int interval(lua_State * L){

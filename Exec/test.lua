@@ -1,14 +1,14 @@
-rivals1 = "bed_test"
---rivals2 = "gff_test"
-importBED("../Demo/Data/test.bed", rivals1)
---importGFF("../Demo/Data/chrX.gff", rivals2)
---saveAsBED("gff.bed", range(rivals2))
---saveAsBED(merge(range(rivals2), range(rivals2)))
---saveAsBED(interval("chr1", 100, 200))
---saveAsBED(merge(interval("chr1",100,200), interval("chr1", 50, 150)))
+-- Import bed and gff files into Rival samples
+importBED("../Demo/Data/test.bed", "bed_sample")
+importGFF("../Demo/Data/chrX.gff", "gff_sample")
 
--- saveAsBED(range(rival1, chr8, 28510032, 31173640))
-saveAsBED(range(rivals1))
+-- Save gff_sample to a BED file called gff.bed
+g = "gff_sample"
+saveAsBED("gff.bed", range(g))
 
--- A = "aloho"
--- add(add(A, "pho"), "go")
+-- Merge two intervals, write to a rival file, then read file to standard out
+saveAsRival("sample3", merge(interval("chr1",100,200), interval("chr1", 50, 150)))
+saveAsBED(range("sample3"))
+
+-- Print out all intervals in bed_sample that overlap chr8:28510032-31173640
+saveAsBED(range("bed_sample", "chr8", 28510032, 31173640))
