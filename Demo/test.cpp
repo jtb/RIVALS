@@ -2,7 +2,10 @@
 #include <string>
 
 #include "rivals.h"
+
+#ifdef DEBUG
 #include "mem.h"
+#endif
 
 using namespace std;
 using namespace rivals;
@@ -84,6 +87,9 @@ int main(){
   saveAsBED( clique( merge( flatten( range(rival1) ), flatten( range(rival2) )) , 2 ) );
   }
 
+#ifdef DEBUG
   printLeak();
+#endif
+  
   return 0;
 }

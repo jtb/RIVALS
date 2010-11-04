@@ -3,7 +3,10 @@
 #include <stack>
 
 #include "eval.h"
+
+#ifdef DEBUG
 #include "mem.h"
+#endif
 
 #include "lua.hpp"
 
@@ -89,6 +92,10 @@ int main(int argc, char *argv[]){
 
     lua_close(L);
   }
+
+#ifdef DEBUG
   printLeak();
+#endif
+
   return 0;
 }
