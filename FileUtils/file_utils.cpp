@@ -199,7 +199,6 @@ namespace rivals {
     bool sorted = true;
     Capacity gf_size = 0;
     string curr_chr = "";
-    Capacity curr_chr_start = 0;
     
     fstream file;
     file.open(fileFromSample(sample).c_str(), ios::out | ios::binary | ios::trunc);

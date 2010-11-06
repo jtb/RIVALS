@@ -1,6 +1,8 @@
 cmake_minimum_required (VERSION 2.6) 
 project(RIVALS)
 
+set(CMAKE_CXX_FLAGS "-Wall")
+
 IF(CMAKE_BUILD_TYPE MATCHES "Debug")
   ADD_DEFINITIONS(-DDEBUG)
 ENDIF(CMAKE_BUILD_TYPE MATCHES "Debug")

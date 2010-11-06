@@ -19,7 +19,6 @@ static int importBED(lua_State * L){
 static int importGFF(lua_State * L){
   std::string arg1 = lua_tostring(L,1);
   std::string arg2 = lua_tostring(L,2);
-  //std::cout << "importGFF(" << arg1 << " , " << arg2 << ")" << std::endl;
   rivals::importGFF(arg1, arg2);
   return 0;
 }
@@ -101,7 +100,61 @@ static int merge(lua_State * L){
   Eval *m = (Eval *)lua_touserdata(L,2);
   Eval * mer = new Merge(n, m);
   lua_pushlightuserdata(L, (void*)mer);
+  return 1;
+}
 
+static int flatten(lua_State * L){
+  Eval *n = (Eval *)lua_touserdata(L,1);
+  Eval * flat = new Flatten(n);
+  lua_pushlightuserdata(L, (void*)flat);
+  return 1;
+}
+
+static int clique(lua_State * L){
+  Eval *n = (Eval *)lua_touserdata(L,1);
+  ptrdiff_t minOverlap = lua_tointeger(L,2);
+  Eval * cl = new Clique(n, minOverlap);
+  lua_pushlightuserdata(L, (void*)cl);
+  return 1;
+}
+
+static int contained_in(lua_State * L){
+  Eval *n = (Eval *)lua_touserdata(L,1);
+  Eval *m = (Eval *)lua_touserdata(L,2);
+  Eval * ci = new Contained_In(n, m);
+  lua_pushlightuserdata(L, (void*)ci);
+  return 1;
+}
+
+static int contains(lua_State * L){
+  Eval *n = (Eval *)lua_touserdata(L,1);
+  Eval *m = (Eval *)lua_touserdata(L,2);
+  Eval * c = new Contains(n, m);
+  lua_pushlightuserdata(L, (void*)c);
+  return 1;
+}
+
+static int overlaps(lua_State * L){
+  Eval *n = (Eval *)lua_touserdata(L,1);
+  Eval *m = (Eval *)lua_touserdata(L,2);
+  Eval * ov = new Overlaps(n, m);
+  lua_pushlightuserdata(L, (void*)ov);
+  return 1;
+}
+
+static int get_strand(lua_State * L){
+  Eval *n = (Eval *)lua_touserdata(L,1);
+  int strand = lua_tointeger(L,2);
+  Eval * gs = new Get_Strand(n, strand);
+  lua_pushlightuserdata(L, (void*)gs);
+  return 1;
+}
+
+static int set_strand(lua_State * L){
+  Eval *n = (Eval *)lua_touserdata(L,1);
+  int strand = lua_tointeger(L,2);
+  Eval * ss = new Set_Strand(n, strand);
+  lua_pushlightuserdata(L, (void*)ss);
   return 1;
 }
 
@@ -112,13 +165,23 @@ int main(int argc, char *argv[]){
 
     lua_register(L, "importBED", importBED);
     lua_register(L, "importGFF", importGFF);
+    
+    lua_register(L, "interval", interval);        
+    lua_register(L, "range", range);
+
+    lua_register(L, "merge", merge);
+    lua_register(L, "flatten", flatten);
+    lua_register(L, "clique", clique);
+    lua_register(L, "contained_in", contained_in);
+    lua_register(L, "contains", contains);
+    lua_register(L, "overlaps", overlaps);
+    lua_register(L, "get_strand", get_strand);
+    lua_register(L, "set_strand", set_strand);
+    
     lua_register(L, "saveAsBED", saveAsBED);
     lua_register(L, "saveAsRival", saveAsRival);
     lua_register(L, "count", countIntervals);
-    lua_register(L, "range", range);
-    lua_register(L, "interval", interval);
-    lua_register(L, "merge", merge);
-    
+
     if(luaL_dofile(L, argv[1])!=0) fprintf(stderr,"%s\n",lua_tostring(L,-1));
 
     lua_close(L);

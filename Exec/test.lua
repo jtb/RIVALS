@@ -13,4 +13,4 @@ print("Number of intervals in sample3 is ", count(range("sample3")))
 
 -- Print out all intervals in bed_sample that overlap chr8:28510032-31173640
 saveAsBED(range("bed_sample", "chr8", 28510032, 31173640))
-
+saveAsBED(overlaps(range("bed_sample"), interval("chr8", 28510032, 31173640)))

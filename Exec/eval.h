@@ -92,6 +92,99 @@ class Merge : public Eval {
   }
 };
 
+class Flatten : public Eval {
+ public:
+ Flatten(Eval * n) : Eval() {
+    left_child = n;
+  }
+  ~Flatten(){}
+
+  std::auto_ptr<rivals::Node> eval(){
+    return rivals::flatten(left_child->eval());
+  }
+};
+
+class Clique : public Eval {
+ public:
+ Clique(Eval * n, ptrdiff_t min) : Eval(), minOverlap(min) {
+    left_child = n;
+  }
+  ~Clique(){}
+
+  std::auto_ptr<rivals::Node> eval(){
+    return rivals::clique(left_child->eval(), minOverlap);
+  }
+ private:
+  rivals::Capacity minOverlap;
+};
+
+class Contained_In : public Eval {
+ public:
+ Contained_In(Eval * n, Eval * m) : Eval() {
+    left_child = n;
+    right_child = m;
+  }
+  ~Contained_In(){}
+
+  std::auto_ptr<rivals::Node> eval(){
+    return rivals::contained_in(left_child->eval(), right_child->eval());
+  }
+};
+
+class Contains : public Eval {
+ public:
+ Contains(Eval * n, Eval * m) : Eval() {
+    left_child = n;
+    right_child = m;
+  }
+  ~Contains(){}
+
+  std::auto_ptr<rivals::Node> eval(){
+    return rivals::contains(left_child->eval(), right_child->eval());
+  }
+};
+
+class Overlaps : public Eval {
+ public:
+ Overlaps(Eval * n, Eval * m) : Eval() {
+    left_child = n;
+    right_child = m;
+  }
+  ~Overlaps(){}
+
+  std::auto_ptr<rivals::Node> eval(){
+    return rivals::overlaps(left_child->eval(), right_child->eval());
+  }
+};
+
+class Get_Strand : public Eval {
+ public:
+ Get_Strand(Eval * n, int str) : Eval(), strand(str) {
+    left_child = n;
+  }
+  ~Get_Strand(){}
+
+  std::auto_ptr<rivals::Node> eval(){
+    return rivals::get_strand(left_child->eval(), strand);
+  }
+ private:
+  int strand;
+};
+
+class Set_Strand : public Eval {
+ public:
+ Set_Strand(Eval * n, int str) : Eval(), strand(str) {
+    left_child = n;
+  }
+  ~Set_Strand(){}
+
+  std::auto_ptr<rivals::Node> eval(){
+    return rivals::set_strand(left_child->eval(), strand);
+  }
+ private:
+  int strand;
+};
+
 std::string SaveAsBED(Eval * n){
   std::string filename = rivals::saveAsBED(n->eval());
   delete n;
