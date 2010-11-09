@@ -1,0 +1,205 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+  <style type="text/css">
+    tr.d0 td {
+    background-color: #CCCCFF; color: black;
+    }
+    tr.d1 td {
+    background-color: #CCFFCC; color: black;
+    }
+  </style>
+
+
+  <A name="intro"><H1>Introduction</H1></A>
+  <P>
+    RIVALS is a software tool that allows for fast range queries and fast-in order traversals of genomic interval graphs.  Many common tasks that are performed on interval graphs can be performed efficiently when the intervals are sorted in order by start position.  Examples of these tasks include pooling different interval graphs into one, finding areas of maximal coverage, and locating islands of connected reads.  RIVALS contains "runners", which apply a certain function (such as merge, overlap, flatten) to a sorted interval graph and produce another sorted interval graph as the result.  By chaining these runners together, RIVALS can perform complex analyses on very large genomic datasets.
+  </P>
+  <P>
+    Genomic data is stored in an augmented interval tree.  The data is stored on disk as a contiguous list of intervals sorted by start position, thus making efficient use of cache.  Each interval consists of a chromosome (or scaffold/contig), strand (+, -, both), start position (inclusive), and stop position (exclusive).  Searching the interval graph for a range of intervals can be done efficiently by viewing the interval list as a binary tree.  Each interval in the tree is augmented with the longest endpoint of its subtree.  By adding this extra field to the intervals, analysis can be done on either the entire dataset or over a particular range of interest.
+  </P>
+  <P>
+   [TODO: Write something about Lua?]
+  </P>
+  
+  <A name="install"><H1>Installation</H1></A>
+  <A name="quick"><H1>Quick Start</H1></A>
+  <p>
+    Example scripts are included with the software to quickly get started using its features.  
+  </p>
+
+  <A name="usage"><H1>Usage</H1></A>
+  <A name="import"><H1>Import</H1></A>
+  <A name="format"><H1>File Format</H1></A>
+  <A name="rivals"><H1>RIVAL Commands</H1></A>
+  <P>
+    This section includes a comprehensive list of commands available in RIVALS.  The commands can roughly be divided into categories as follows: importers, sources, runners, and sinks.  Importers are functions that take a text file and converts it into a RIVALS file.  Currently, BED and GFF files are supported.  The source commands allow you to load interval graphs.  You can either create an interval manually or load an interval graph that you imported from a BED or GFF file.  Once loaded, you chain together the runners to perform analyses on the interval graph.  Finally, the sinks complete the analysis by outputting the results or reporting a summary of the results.  The following table gives an overview of the different commands.  Clicking on a command will give you a more details on what the command does.  Please visit the Examples section to see examples of the commands in action. 
+  </P>
+
+  <table border="2">
+    <tr>
+      <th>Importers</th>
+    </tr>
+    <tr class="d0">
+      <td><code><A HREF="manual.html#install" target="manual">importBED</A>("from_bed_file", "to_rival_file" [, overwrite?])</code></td>
+      <td>Import BED file into RIVALS file</td>
+    </tr>
+    <tr class="d1">
+      <td><code><A HREF="manual.html#install" target="manual">importGFF</A>("from_gff_file", "to_rival_file" [, overwrite?])</code></td>
+      <td>Import GFF file into RIVALS file</td>
+    </tr>
+    <tr>
+      <th>Sources</th>
+    </tr>
+    <tr class="d0">
+      <td><code><A HREF="manual.html#install" target="manual">interval</A>("chr", start, stop)</td>
+      <td>Create the interval chr:start-stop</td>
+    </tr>
+    <tr class="d1">
+      <td><code><A HREF="manual.html#install" target="manual">range</A>("sample")</td>
+      <td>Return all intervals in sample</td>
+    </tr>
+    <tr class="d0">
+      <td><code><A HREF="manual.html#install" target="manual">range</A>("sample", "chr")</td>
+      <td>Return all intervals in sample that are on chromosome chr</td>
+    </tr>
+    <tr class="d1">
+      <td><code><A HREF="manual.html#install" target="manual">range</A>("sample", "chr", start, stop)</td>
+      <td>Return all intervals in sample that overlap chr:start-stop</td>
+    </tr>
+    <tr class="d0">
+      <td><code><A HREF="manual.html#install" target="manual">range</A>("sample", "chr", point)</td>
+      <td>Return all intervals in sample that overlap chr:point</td>
+    </tr>
+    <tr>
+      <th>Runners</th>
+    </tr>
+    <tr class="d1">
+      <td><code><A HREF="manual.html#install" target="manual">merge</A>(Runner A, Runner B)</td>
+      <td>Merge intervals from A and B</td>
+    </tr>
+    <tr class="d0">
+      <td><code><A HREF="manual.html#install" target="manual">flatten</A>(Runner A)</td>
+      <td>Join overlapping intervals from A</td>
+    </tr>
+    <tr class="d1">
+      <td><code><A HREF="manual.html#install" target="manual">clique</A>(Runner A, minimum_overlap)</td>
+      <td>Report regions with at least minimum_overlap depth</td>
+    </tr>
+    <tr class="d0">
+      <td><code><A HREF="manual.html#install" target="manual">overlaps</A>(Runner A, Runner B)</td>
+      <td>Report intervals in A that overlap some interval in B</td>
+    </tr>
+    <tr class="d1">
+      <td><code><A HREF="manual.html#install" target="manual">contained_in</A>(Runner A, Runner B)</td>
+      <td>Report intervals in A that are contained in some interval in B</td>
+    </tr>
+    <tr class="d0">
+      <td><code><A HREF="manual.html#install" target="manual">contains</A>(Runner A, Runner B)</td>
+      <td>Report intervals in A that contain some interval in B</td>
+    </tr>
+    <tr class="d1">
+      <td><code><A HREF="manual.html#install" target="manual">get_strand</A>(Runner A, strand)</td>
+      <td>Report intervals on A that are from the specified strand (forward, reverse, or both)</td>
+    </tr>
+    <tr class="d0">
+      <td><code><A HREF="manual.html#install" target="manual">set_strand</A>(Runner A, strand)</td>
+      <td>Set intervals on A to the specified strand (forward, reverse, or both)</td>
+    </tr>
+    <tr class="d0">
+      <td><code><A HREF="manual.html#install" target="manual">score_cutoff</A>(Runner A, threshold)</td>
+      <td>Reports all intervals with score greater than or equal to the threshold</td>
+    </tr>
+    <tr class="d1">
+      <th>Sinks</th>
+    </tr>
+    <tr class="d0">
+      <td><code><A HREF="manual.html#install" target="manual">saveAsBED</A>("to_bed_file", Runner A)</td>
+      <td>Create a BED file from runner A</td>
+    </tr>
+    <tr class="d1">
+      <td><code><A HREF="manual.html#install" target="manual">saveAsBED</A>(Runner A)</td>
+      <td>Print runner A in BED format to standard out</td>
+    </tr>
+    <tr class="d0">
+      <td><code><A HREF="manual.html#install" target="manual">saveAsRival</A>("to_rival_file", Runner A)</td>
+      <td>Create a RIVALS file from runner A</td>
+    </tr>
+    <tr class="d1">
+      <td><code><A HREF="manual.html#install" target="manual">countIntervals</A>(Runner A)</td>
+      <td>Count the number of intervals in runner A</td>
+    </tr>
+  </table>
+
+  <A name="examples"><H1>Examples</H1></A>
+  <H2>Importing and Exporting data</H2>
+      <P>
+	Assume the files "sample1.bed" and "sample2.bed" exist in your current directory.  Import them as "bed_sample" and "gff_sample".
+	<blockquote>
+	  <code>
+	    -- Import bed and gff files into Rival samples<br />
+	    importBED("../Demo/Data/test.bed", "bed_sample")<br />
+	    importGFF("../Demo/Data/chrX.gff", "gff_sample")<br />
+	    <br />
+	    </code>
+	</blockquote>
+	
+	Save the Rival sample "gff_sample" to a BED file.
+	<blockquote>
+	  <code>
+	    -- Save gff_sample to a BED file<br />
+	    saveAsBED("gff_to_bed.bed", range("gff_sample"))<br />
+	  </code>
+	</blockquote>
+      </P>
+
+      <H2>Finding Enriched Islands</H2>
+      <P>
+	An island is a set of alignments that span a block of contiguous bases.  If you view the genomic intervals as a graph - where each node is an alignment and edges are formed between overlapping alignments - then an island is a set of nodes where each node is connected to each other node by some path in the graph.  Below are some examples of finding islands with high read coverage.
+      </P>
+      
+      <P>
+	One measure of an island is the "population" of the island - the number of alignments that belong to the island.  You can find this by using the flatten command, followed by a score cutoff (20 in this example).
+      <blockquote>
+	<code>
+	  -- Find all islands containing at least 20 total alignments<br />
+	  sample = importBED("nrsf.bed", "nrsf")<br />
+	  saveAsBED(score_cutoff(flatten(range(sample)), 20))
+	</code>
+      </blockquote>
+      </P>
+      <P>
+	Another measure of an island is the "elevation" of the island - the maximum coverage of any of the bases in the island.
+      <blockquote>
+	<code>
+	  -- Find all islands containing a position of at least 100x coverage<br />
+	  saveAsBED( contains( flatten(range(sample)), clique(range(sample), 100)  ) )
+	</code>
+      </blockquote>
+      </P>
+
+  <A name="authors"><H1>Authors</H1></A>
+  <p>
+    RIVALS is written by Justin Brown and Lina Dong.  For questions or feedback, please email run.intervals@gmail.com
+  </p>
+  <A name="license"><H1>License</H1></A>
+  <p>
+    Copyright 2010 Justin T. Brown<br />
+    All Rights Reserved<br />
+    EMAIL: run.intervals@gmail.com
+  </p>
+
+  <p>
+    Rivals is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Lesser General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+  </p>
+  
+  <p>
+    Rivals is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Lesser General Public License for more details.
+  </p>
+
+</HTML>
