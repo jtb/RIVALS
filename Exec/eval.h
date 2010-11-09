@@ -185,6 +185,20 @@ class Set_Strand : public Eval {
   int strand;
 };
 
+class Score_Cutoff : public Eval {
+ public:
+ Score_Cutoff(Eval * n, int thr) : Eval(), thresh(thr) {
+    left_child = n;
+  }
+  ~Score_Cutoff(){}
+
+  std::auto_ptr<rivals::Node> eval(){
+    return rivals::score_cutoff(left_child->eval(), thresh);
+  }
+ private:
+  int thresh;
+};
+
 std::string SaveAsBED(Eval * n){
   std::string filename = rivals::saveAsBED(n->eval());
   delete n;

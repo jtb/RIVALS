@@ -82,6 +82,10 @@ namespace rivals {
     if(!a.get()) throw no_own();
     return std::auto_ptr<Node>(new Node(new SetStrand(*(a->iter), str), a));
   }
+  std::auto_ptr<Node> score_cutoff(std::auto_ptr<Node> a, int thresh){
+    if(!a.get()) throw no_own();
+    return std::auto_ptr<Node>(new Node(new ScoreCutoff(*(a->iter), thresh), a));
+  }
 
   std::string saveAsBED(std::auto_ptr<Node> a){
     return saveAsBED("-", a);

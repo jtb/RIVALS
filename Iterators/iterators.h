@@ -36,6 +36,7 @@
 #include "contains.h"
 #include "interval_iter.h"
 #include "strand.h"
+#include "score_cutoff.h"
 #include "overlaps.h"
 
 namespace rivals {
@@ -102,6 +103,8 @@ namespace rivals {
     
   std::auto_ptr<Node> get_strand(std::auto_ptr<Node> a, int str);
   std::auto_ptr<Node> set_strand(std::auto_ptr<Node> a, int str);
+
+  std::auto_ptr<Node> score_cutoff(std::auto_ptr<Node> a, int thresh);
 
   std::string saveAsBED(std::string filename, std::auto_ptr<Node> a);
   std::string saveAsBED(std::auto_ptr<Node> a);

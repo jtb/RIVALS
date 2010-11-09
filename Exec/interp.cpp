@@ -1,4 +1,5 @@
 #include <iostream>
+#include <exception>
 #include <string>
 #include <stack>
 
@@ -9,6 +10,17 @@
 #endif
 
 #include "lua.hpp"
+
+struct myexception: public std::exception
+{
+  std::string s;
+  myexception(std::string ss) : s(ss) {}
+  const char* what() const throw()
+  {
+    return s.c_str();
+  }
+  ~myexception() throw () {}
+};
 
 static int importBED(lua_State * L){
   std::string arg1 = lua_tostring(L,1);
@@ -104,6 +116,9 @@ static int merge(lua_State * L){
 }
 
 static int flatten(lua_State * L){
+  if(!lua_islightuserdata(L, 1)){
+    throw myexception("Expected a runner as argument to flatten command");
+  }
   Eval *n = (Eval *)lua_touserdata(L,1);
   Eval * flat = new Flatten(n);
   lua_pushlightuserdata(L, (void*)flat);
@@ -158,6 +173,14 @@ static int set_strand(lua_State * L){
   return 1;
 }
 
+static int score_cutoff(lua_State * L){
+  Eval *n = (Eval *)lua_touserdata(L,1);
+  int thresh = lua_tointeger(L,2);
+  Eval * gs = new Score_Cutoff(n, thresh);
+  lua_pushlightuserdata(L, (void*)gs);
+  return 1;
+}
+
 int main(int argc, char *argv[]){
   {
     lua_State *L = lua_open();
@@ -177,13 +200,14 @@ int main(int argc, char *argv[]){
     lua_register(L, "overlaps", overlaps);
     lua_register(L, "get_strand", get_strand);
     lua_register(L, "set_strand", set_strand);
+    lua_register(L, "score_cutoff", score_cutoff);
     
     lua_register(L, "saveAsBED", saveAsBED);
     lua_register(L, "saveAsRival", saveAsRival);
     lua_register(L, "count", countIntervals);
 
+    
     if(luaL_dofile(L, argv[1])!=0) fprintf(stderr,"%s\n",lua_tostring(L,-1));
-
     lua_close(L);
   }
 
