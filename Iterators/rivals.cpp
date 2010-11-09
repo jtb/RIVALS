@@ -28,7 +28,7 @@
 
 namespace rivals {
     
-  void importBED(std::string source, std::string outbase, bool overwrite){
+  std::string importBED(std::string source, std::string outbase, bool overwrite){
     struct stat riv;
     struct stat map;
     //if overwrite is true OR one of the two rival files (.map and .riv) does not exist, then create new sample
@@ -36,9 +36,10 @@ namespace rivals {
       BEDfile bed(source);
       importData(bed, outbase);
     }
+    return outbase;
   }
 
-  void importGFF(std::string source, std::string outbase, bool overwrite){
+  std::string importGFF(std::string source, std::string outbase, bool overwrite){
     struct stat riv;
     struct stat map;
     //if overwrite is true OR one of the two rival files (.map and .riv) does not exist, then create new sample
@@ -46,9 +47,10 @@ namespace rivals {
       GFFfile gff(source);
       importData(gff, outbase);
     }
+    return outbase;
   }
 
-  void importTAB(std::string source, std::string outbase, bool overwrite){
+  std::string importTAB(std::string source, std::string outbase, bool overwrite){
     struct stat riv;
     struct stat map;
     //if overwrite is true OR one of the two rival files (.map and .riv) does not exist, then create new sample
@@ -56,5 +58,6 @@ namespace rivals {
       TabDelim tb(source);
       importData(tb, outbase);
     }
+    return outbase;
   }
 }

@@ -13,14 +13,14 @@
 static int importBED(lua_State * L){
   std::string arg1 = lua_tostring(L,1);
   std::string arg2 = lua_tostring(L,2);
-  rivals::importBED(arg1, arg2);
-  return 0;
+  lua_pushstring(L, rivals::importBED(arg1, arg2).c_str());
+  return 1;
 }
 static int importGFF(lua_State * L){
   std::string arg1 = lua_tostring(L,1);
   std::string arg2 = lua_tostring(L,2);
-  rivals::importGFF(arg1, arg2);
-  return 0;
+  lua_pushstring(L, rivals::importGFF(arg1, arg2).c_str());
+  return 1;
 }
 
 static int saveAsBED(lua_State * L){
