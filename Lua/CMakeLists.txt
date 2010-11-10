@@ -25,9 +25,6 @@ lstrlib.c
 ltable.c
 ltablib.c
 ltm.c
-lua.c
-luac
-luac.c
 lundump.c
 lvm.c
 lzio.c

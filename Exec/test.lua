@@ -4,10 +4,10 @@ importGFF("../Demo/Data/chrX.gff", "gff_sample")
 
 -- Save gff_sample to a BED file called gff.bed
 g = "gff_sample"
-saveAsBED("gff.bed", range(g))
+saveAsBED(range(g), "gff.bed")
 
 -- Merge two intervals, write to a rival file, then read file to standard out
-saveAsRival("sample3", merge(interval("chr1",100,200), interval("chr1", 50, 150)))
+saveAsRival(merge(interval("chr1",100,200), interval("chr1", 50, 150)), "sample3")
 saveAsBED(range("sample3"))
 print("Number of intervals in sample3 is ", count(range("sample3")))
 
