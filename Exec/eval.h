@@ -8,21 +8,33 @@
 
 class Eval {
  public:
- Eval() : left_child(0), right_child(0) { }
+ Eval() : left_child(0), right_child(0), counter(0) { this->incr(); }
+ Eval(Eval * n) : left_child(n), right_child(0), counter(0) { this->incr(); }
+ Eval(Eval* n, Eval * m) : left_child(n), right_child(m), counter(0) { this->incr(); }
 	
-	virtual ~Eval(){
-		delete right_child;
-		right_child=0;
-		delete left_child;
-		left_child=0;
-	}
-
-	virtual std::auto_ptr<rivals::Node> eval() = 0;
+  void incr(){
+    counter++; 
+    if(right_child) right_child->incr();
+    if(left_child) left_child->incr();
+  }
+  
+  void decr(){
+#ifdef DEBUG
+    assert(counter>0);
+#endif
+    counter--;
+    if(right_child) right_child->decr();
+    if(left_child) left_child->decr();
+    if(!counter) delete this;
+  }
+  
+  virtual std::auto_ptr<rivals::Node> eval() = 0;
 	
  protected:
-	Eval * left_child;
-	Eval * right_child;
-		
+    virtual ~Eval(){}
+    Eval * left_child;
+    Eval * right_child;
+    int counter;
 };
 
 class Range1 : public Eval {
@@ -81,10 +93,7 @@ class Interval : public Eval {
 
 class Merge : public Eval {
  public:
- Merge(Eval * n, Eval * m) : Eval() {
-    left_child = n;
-    right_child = m;
-  }
+ Merge(Eval * n, Eval * m) : Eval(n, m) {}
   ~Merge(){}
 
   std::auto_ptr<rivals::Node> eval(){
@@ -94,9 +103,7 @@ class Merge : public Eval {
 
 class Flatten : public Eval {
  public:
- Flatten(Eval * n) : Eval() {
-    left_child = n;
-  }
+ Flatten(Eval * n) : Eval(n) {}
   ~Flatten(){}
 
   std::auto_ptr<rivals::Node> eval(){
@@ -106,9 +113,7 @@ class Flatten : public Eval {
 
 class Clique : public Eval {
  public:
- Clique(Eval * n, ptrdiff_t min) : Eval(), minOverlap(min) {
-    left_child = n;
-  }
+ Clique(Eval * n, ptrdiff_t min) : Eval(n), minOverlap(min) {}
   ~Clique(){}
 
   std::auto_ptr<rivals::Node> eval(){
@@ -120,10 +125,7 @@ class Clique : public Eval {
 
 class Contained_In : public Eval {
  public:
- Contained_In(Eval * n, Eval * m) : Eval() {
-    left_child = n;
-    right_child = m;
-  }
+ Contained_In(Eval * n, Eval * m) : Eval(n, m) {}
   ~Contained_In(){}
 
   std::auto_ptr<rivals::Node> eval(){
@@ -133,10 +135,7 @@ class Contained_In : public Eval {
 
 class Contains : public Eval {
  public:
- Contains(Eval * n, Eval * m) : Eval() {
-    left_child = n;
-    right_child = m;
-  }
+ Contains(Eval * n, Eval * m) : Eval(n, m) {}
   ~Contains(){}
 
   std::auto_ptr<rivals::Node> eval(){
@@ -146,10 +145,7 @@ class Contains : public Eval {
 
 class Overlaps : public Eval {
  public:
- Overlaps(Eval * n, Eval * m) : Eval() {
-    left_child = n;
-    right_child = m;
-  }
+ Overlaps(Eval * n, Eval * m) : Eval(n, m) {}
   ~Overlaps(){}
 
   std::auto_ptr<rivals::Node> eval(){
@@ -159,9 +155,7 @@ class Overlaps : public Eval {
 
 class Get_Strand : public Eval {
  public:
- Get_Strand(Eval * n, int str) : Eval(), strand(str) {
-    left_child = n;
-  }
+ Get_Strand(Eval * n, int str) : Eval(n), strand(str) {}
   ~Get_Strand(){}
 
   std::auto_ptr<rivals::Node> eval(){
@@ -173,9 +167,7 @@ class Get_Strand : public Eval {
 
 class Set_Strand : public Eval {
  public:
- Set_Strand(Eval * n, int str) : Eval(), strand(str) {
-    left_child = n;
-  }
+ Set_Strand(Eval * n, int str) : Eval(n), strand(str) {}
   ~Set_Strand(){}
 
   std::auto_ptr<rivals::Node> eval(){
@@ -187,9 +179,7 @@ class Set_Strand : public Eval {
 
 class Score_Cutoff : public Eval {
  public:
- Score_Cutoff(Eval * n, int thr) : Eval(), thresh(thr) {
-    left_child = n;
-  }
+ Score_Cutoff(Eval * n, int thr) : Eval(n), thresh(thr) {}
   ~Score_Cutoff(){}
 
   std::auto_ptr<rivals::Node> eval(){
@@ -201,25 +191,21 @@ class Score_Cutoff : public Eval {
 
 std::string SaveAsBED(Eval * n){
   std::string filename = rivals::saveAsBED(n->eval());
-  delete n;
   return filename;
 }
 
 std::string SaveAsBED(std::string file, Eval *n){
   std::string filename = rivals::saveAsBED(file, n->eval());
-  delete n;
   return filename;
 }
 
 std::string SaveAsRival(std::string base, Eval *n){
   std::string basename = rivals::saveAsRival(base, n->eval());
-  delete n;
   return basename;
 }
 
 rivals::Capacity CountIntervals(Eval *n){
   rivals::Capacity num_intervals = rivals::countIntervals(n->eval());
-  delete n;
   return num_intervals;
 }
 
