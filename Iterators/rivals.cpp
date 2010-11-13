@@ -35,6 +35,8 @@ namespace rivals {
     if(overwrite || stat(fileFromSample(outbase).c_str(),&riv) || stat(chrFromSample(outbase).c_str(),&map)){
       BEDfile bed(source);
       importData(bed, outbase);
+    }else{
+      fprintf(stderr, "%s already exists. To overwrite, remove file or set overwrite to true.\n", outbase.c_str());
     }
     return outbase;
   }
@@ -46,6 +48,8 @@ namespace rivals {
     if(overwrite || stat(fileFromSample(outbase).c_str(),&riv) || stat(chrFromSample(outbase).c_str(),&map)){
       GFFfile gff(source);
       importData(gff, outbase);
+    }else{
+      fprintf(stderr, "%s already exists. To overwrite, remove file or set overwrite to true.\n", outbase.c_str());
     }
     return outbase;
   }
@@ -57,6 +61,8 @@ namespace rivals {
     if(overwrite || stat(fileFromSample(outbase).c_str(),&riv) || stat(chrFromSample(outbase).c_str(),&map)){
       TabDelim tb(source);
       importData(tb, outbase);
+    }else{
+      fprintf(stderr, "%s already exists. To overwrite, remove file or set overwrite to true.\n", outbase.c_str());
     }
     return outbase;
   }

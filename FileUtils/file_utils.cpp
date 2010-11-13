@@ -181,17 +181,21 @@ namespace rivals {
   }
 
   void importData(GenomeFile & gf, string sample){
+    fprintf(stderr, "Importing %s.  This may take a while but only needs to be done once.\n", sample.c_str());
     if(!rivalWriter(gf, sample)){
       //sort sample.riv
       string version;
       off_t offset;
       Capacity num_elements;
       readHeader(sample, version, offset, num_elements);
+      fprintf(stderr, "Sorting ......\n");
       SortFile<cInterval> es(fileFromSample(sample), offset);
     }
+    fprintf(stderr, "Indexing ......\n");
     indexNodes(sample);
+    fprintf(stderr, "Done Importing.\n");
   }
-
+  
   bool rivalWriter(GenomeFile & gf, string sample){
     
     map<string, pair<Capacity, Capacity> > chrmap;
