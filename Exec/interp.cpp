@@ -83,7 +83,7 @@ static int countIntervals(lua_State * L){
   if(lua_gettop(L) != 1){ luaL_error(L, "Expecting 1 argument to count command"); }
  
   Eval * n = *(Eval **)luaL_checkudata(L, 1, "Runner");
-  lua_pushinteger(L, CountIntervals(n));
+  lua_pushnumber(L, CountIntervals(n));
   return 1;
 }
 

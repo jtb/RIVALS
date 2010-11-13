@@ -37,95 +37,97 @@
 
   <table border="2">
     <tr>
-      <th>Importers</th>
+      <th colspan="3">Importers: commands that convert text files into RIVAL files</th>
     </tr>
     <tr class="d0">
-      <td><code><A HREF="manual.html#install" target="manual">importBED</A>("from_bed_file", "to_rival_file" [, overwrite=false])</code></td>
-      <td>Import BED file into RIVALS file</td>
+      <td><code>string <A HREF="manual.html#install" target="manual">importBED</A></code></td>
+      <td>("from_bed", "to_rival" [,overwrite=false])</td>
+      <td>Import BED file into RIVAL file<br />Only overwrites if optional argument is true</td>
     </tr>
     <tr class="d1">
-      <td><code><A HREF="manual.html#install" target="manual">importGFF</A>("from_gff_file", "to_rival_file" [, overwrite=false])</code></td>
-      <td>Import GFF file into RIVALS file</td>
+      <td><code>string <A HREF="manual.html#install" target="manual">importGFF</A></code></td>
+      <td>("from_gff", "to_rival" [,overwrite=false])</td>
+      <td>Import GFF file into RIVAL file<br />Only overwrites if optional argument is true</td>
     </tr>
     <tr>
-      <th>Sources</th>
+      <th colspan="3">Sources: commands that create an initial Runner</th>
     </tr>
     <tr class="d0">
-      <td><code><A HREF="manual.html#install" target="manual">interval</A>("chr", start, stop)</td>
+      <td><code>Runner <A HREF="manual.html#install" target="manual">interval</A></code></td><td>("chr", start, stop)</td>
       <td>Create the interval chr:start-stop</td>
     </tr>
     <tr class="d1">
-      <td><code><A HREF="manual.html#install" target="manual">range</A>("sample")</td>
-      <td>Return all intervals in sample</td>
+      <td><code>Runner <A HREF="manual.html#install" target="manual">range</A></code></td><td>("from_rival")</td>
+      <td>Return all intervals in RIVAL file</td>
     </tr>
     <tr class="d0">
-      <td><code><A HREF="manual.html#install" target="manual">range</A>("sample", "chr")</td>
-      <td>Return all intervals in sample that are on chromosome chr</td>
+      <td><code>Runner <A HREF="manual.html#install" target="manual">range</A></code></td><td>("from_rival", "chr")</td>
+      <td>Return all intervals in RIVAL file that are on chromosome chr</td>
     </tr>
     <tr class="d1">
-      <td><code><A HREF="manual.html#install" target="manual">range</A>("sample", "chr", start, stop)</td>
-      <td>Return all intervals in sample that overlap chr:start-stop</td>
+      <td><code>Runner <A HREF="manual.html#install" target="manual">range</A></code></td><td>("from_rival", "chr", start, stop)</td>
+      <td>Return all intervals in RIVAL file that overlap chr:start-stop</td>
     </tr>
     <tr class="d0">
-      <td><code><A HREF="manual.html#install" target="manual">range</A>("sample", "chr", point)</td>
-      <td>Return all intervals in sample that overlap chr:point</td>
+      <td><code>Runner <A HREF="manual.html#install" target="manual">range</A></code></td><td>("from_rival", "chr", point)</td>
+      <td>Return all intervals in RIVAL file that overlap chr:point</td>
     </tr>
     <tr>
-      <th>Runners</th>
+      <th colspan="3">Runners: commands that can be linked together</th>
     </tr>
     <tr class="d1">
-      <td><code><A HREF="manual.html#install" target="manual">merge</A>(Runner A, Runner B)</td>
+      <td><code>Runner <A HREF="manual.html#install" target="manual">merge</A></code></td><td>(Runner A, Runner B)</td>
       <td>Merge intervals from A and B</td>
     </tr>
     <tr class="d0">
-      <td><code><A HREF="manual.html#install" target="manual">flatten</A>(Runner A)</td>
+      <td><code>Runner <A HREF="manual.html#install" target="manual">flatten</A></code></td><td>(Runner A)</td>
       <td>Join overlapping intervals from A</td>
     </tr>
     <tr class="d1">
-      <td><code><A HREF="manual.html#install" target="manual">clique</A>(Runner A, minimum_overlap)</td>
+      <td><code>Runner <A HREF="manual.html#install" target="manual">clique</A></code></td><td>(Runner A, int minimum_overlap)</td>
       <td>Report regions with at least minimum_overlap depth</td>
     </tr>
     <tr class="d0">
-      <td><code><A HREF="manual.html#install" target="manual">overlaps</A>(Runner A, Runner B)</td>
+      <td><code>Runner <A HREF="manual.html#install" target="manual">overlaps</A></code></td><td>(Runner A, Runner B)</td>
       <td>Report intervals in A that overlap some interval in B</td>
     </tr>
     <tr class="d1">
-      <td><code><A HREF="manual.html#install" target="manual">contained_in</A>(Runner A, Runner B)</td>
+      <td><code>Runner <A HREF="manual.html#install" target="manual">contained_in</A></code></td><td>(Runner A, Runner B)</td>
       <td>Report intervals in A that are contained in some interval in B</td>
     </tr>
     <tr class="d0">
-      <td><code><A HREF="manual.html#install" target="manual">contains</A>(Runner A, Runner B)</td>
+      <td><code>Runner <A HREF="manual.html#install" target="manual">contains</A></code></td><td>(Runner A, Runner B)</td>
       <td>Report intervals in A that contain some interval in B</td>
     </tr>
     <tr class="d1">
-      <td><code><A HREF="manual.html#install" target="manual">get_strand</A>(Runner A, strand)</td>
-      <td>Report intervals on A that are from the specified strand (forward, reverse, or both)</td>
+      <td><code>Runner <A HREF="manual.html#install" target="manual">get_strand</A></code></td><td>(Runner A, "strand")</td>
+      <td>Report intervals on A that are from the specified strand: "+", "-", or "." (both)</td>
     </tr>
     <tr class="d0">
-      <td><code><A HREF="manual.html#install" target="manual">set_strand</A>(Runner A, strand)</td>
-      <td>Set intervals on A to the specified strand (forward, reverse, or both)</td>
+      <td><code>Runner <A HREF="manual.html#install" target="manual">set_strand</A></code></td><td>(Runner A, "strand")</td>
+      <td>Set intervals on A to the specified strand: "+", "-", or "." (both)</td>
     </tr>
     <tr class="d0">
-      <td><code><A HREF="manual.html#install" target="manual">score_cutoff</A>(Runner A, threshold)</td>
+      <td><code>Runner <A HREF="manual.html#install" target="manual">score_cutoff</A></code></td><td>(Runner A, int threshold)</td>
       <td>Reports all intervals with score greater than or equal to the threshold</td>
     </tr>
     <tr class="d1">
-      <th>Sinks</th>
+      <th colspan="3">Sinks: commands that summarize or output the list of intervals</th>
     </tr>
     <tr class="d0">
-      <td><code><A HREF="manual.html#install" target="manual">saveAsBED</A>(Runner A, "to_bed_file")</td>
+      <td><code>string <A HREF="manual.html#install" target="manual">saveAsBED</A></code></td><td>(Runner A, "to_bed")</td>
       <td>Create a BED file from runner A</td>
     </tr>
     <tr class="d1">
-      <td><code><A HREF="manual.html#install" target="manual">saveAsBED</A>(Runner A)</td>
+      <td><code>string <A HREF="manual.html#install" target="manual">saveAsBED</A></code></td><td>(Runner A)</td>
       <td>Print runner A in BED format to standard out</td>
     </tr>
     <tr class="d0">
-      <td><code><A HREF="manual.html#install" target="manual">saveAsRival</A>(Runner A, "to_rival_file")</td>
-      <td>Create a RIVALS file from runner A</td>
+      <td><code>string <A HREF="manual.html#install" target="manual">saveAsRival</A></code></td><td>(Runner A, "to_rival")</td>
+      <td>Create a RIVAL file from runner A</td>
     </tr>
     <tr class="d1">
-      <td><code><A HREF="manual.html#install" target="manual">countIntervals</A>(Runner A)</td>
+      <td><code>number <A HREF="manual.html#install" target="manual">countIntervals</A></code></td><td>(Runner A)</td>
       <td>Count the number of intervals in runner A</td>
     </tr>
   </table>
