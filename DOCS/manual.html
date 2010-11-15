@@ -29,7 +29,51 @@
 
   <A name="usage"><H1>Usage</H1></A>
   <A name="import"><H1>Import</H1></A>
+
   <A name="format"><H1>File Format</H1></A>
+  <P>
+    When a file is imported into a RIVAL sample, two files are created: &lt;base name&gt;.riv and &lt;base name&gt;.map, where "base name" is the name given to the sample during import.  The .riv file is a binary file containing the list of imported intervals sorted by start position.  The .map file is a human-readable text file listing the chromosome names and indices.  The .map file contains three tab-delimited fields: chromosome name, position in list of chromosome start (inclusive), position in list of chromosome stop (exclusive).  These files should not be edited, with the sole exception of changing the names of the chromosomes, which is explained next. 
+  </P>
+  <UL>
+    <A name="alias"><H2>Changing Chromosome Names</H2></A>
+  <P>
+    A chromosome can have various names depending on the naming convention (e.g. "1", "chr1", "NC_000001" for chromosome 1 of human).  When performing RIVAL tasks that combines multiple samples (such as merge or overlap), it is essential that the chromosome names agree.  RIVALS will use the names given in the .map file.  You may change the names in these files so that the chromosome naming convention is consistent across all samples of interest, such as below.
+
+    <blockquote>
+      <em>Changing chromosome names in ncbi.map</em><br \>
+      <table border="1">
+	<tr>
+	  <td>
+	    <code>
+	      NC_000001    244625    398054<br \>
+	      NC_000010   1223225   1304380<br \>
+	      NC_000011   1042658   1133814<br \>
+	      NC_000012   398054    472108<br \>
+	      .......
+	    </code>
+	  </td>
+	  <td>
+	    <H4>
+	      Change to<br \>
+	      <center>=></center>
+	    </H4>
+	  </td>
+	  <td>
+	    <code>
+	      chr1    244625    398054<br \>
+	      chr10   1223225   1304380<br \>
+	      chr11   1042658   1133814<br \>
+	      chr12   398054    472108<br \>
+	      .......
+	    </code>
+	  </td>
+	</tr>
+      </table>
+    </blockquote>
+    Now the sample known as "ncbi" will match any sample that contains the naming convention chr1, chr2, etc.
+  </P>
+  </UL>
+  
   <A name="rivals"><H1>RIVAL Commands</H1></A>
   <P>
     This section includes a comprehensive list of commands available in RIVALS.  The commands can roughly be divided into categories as follows: importers, sources, runners, and sinks.  Importers are functions that take a text file and converts it into a RIVALS file.  Currently, BED and GFF files are supported.  The source commands allow you to load interval graphs.  You can either create an interval manually or load an interval graph that you imported from a BED or GFF file.  Once loaded, you chain together the runners to perform analyses on the interval graph.  Finally, the sinks complete the analysis by outputting the results or reporting a summary of the results.  The following table gives an overview of the different commands.  Clicking on a command will give you a more details on what the command does.  Please visit the Examples section to see examples of the commands in action. 
@@ -134,51 +178,74 @@
 
   <A name="examples"><H1>Examples</H1></A>
   <H2>Importing and Exporting data</H2>
-      <P>
-	Assume the files "sample1.bed" and "sample2.bed" exist in your current directory.  Import them as "bed_sample" and "gff_sample".
-	<blockquote>
-	  <code>
-	    -- Import bed and gff files into Rival samples<br />
-	    importBED("../Demo/Data/test.bed", "bed_sample")<br />
-	    importGFF("../Demo/Data/chrX.gff", "gff_sample")<br />
-	    <br />
-	    </code>
-	</blockquote>
+  <P>
+    Assume the files "sample1.bed" and "sample2.gff" exist in your current directory.  Import them as "bed_sample" and "gff_sample" using the BED and GFF importers, respectively:
+    <blockquote>
+      <code>
+	-- Import bed and gff files into Rival samples<br />
+	importBED("sample1.bed", "bed_sample")<br />
+	importGFF("sample2.gff", "gff_sample")<br />
+	<br />
+      </code>
+    </blockquote>
 	
-	Save the Rival sample "gff_sample" to a BED file.
-	<blockquote>
-	  <code>
-	    -- Save gff_sample to a BED file<br />
-	    saveAsBED("gff_to_bed.bed", range("gff_sample"))<br />
-	  </code>
-	</blockquote>
-      </P>
-
-      <H2>Finding Enriched Islands</H2>
-      <P>
-	An island is a set of alignments that span a block of contiguous bases.  If you view the genomic intervals as a graph - where each node is an alignment and edges are formed between overlapping alignments - then an island is a set of nodes where each node is connected to each other node by some path in the graph.  Below are some examples of finding islands with high read coverage.
-      </P>
+    Save the Rival sample "gff_sample" to a BED file.
+    <blockquote>
+      <code>
+	-- Save only chromosome 8 of gff_sample to a BED file<br />
+	saveAsBED("gff_to_bed.bed", range("gff_sample", "chr8"))<br />
+      </code>
+    </blockquote>
+  </P>
+  
+  <H2>Finding Enriched Islands</H2>
+  <P>
+    An island is a set of alignments that span a block of contiguous bases.  If you view the genomic intervals as a graph - where each node is an alignment and edges are formed between overlapping alignments - then an island is a set of nodes where each node is connected to each other node by some path in the graph.  Below are some examples of finding islands with high read coverage.
+  </P>
       
-      <P>
-	One measure of an island is the "population" of the island - the number of alignments that belong to the island.  You can find this by using the flatten command, followed by a score cutoff (20 in this example).
-      <blockquote>
-	<code>
-	  -- Find all islands containing at least 20 total alignments<br />
-	  sample = importBED("nrsf.bed", "nrsf")<br />
-	  saveAsBED(score_cutoff(flatten(range(sample)), 20))
-	</code>
-      </blockquote>
-      </P>
-      <P>
-	Another measure of an island is the "elevation" of the island - the maximum coverage of any of the bases in the island.
-      <blockquote>
-	<code>
-	  -- Find all islands containing a position of at least 100x coverage<br />
-	  saveAsBED( contains( flatten(range(sample)), clique(range(sample), 100)  ) )
-	</code>
-      </blockquote>
-      </P>
+  <P>
+    One measure of an island is the "population" of the island - the number of alignments that belong to the island.  You can find this by using the flatten command, followed by a score cutoff (20 in this example).
+    <blockquote>
+      <code>
+	-- Find all islands containing at least 20 total alignments<br />
+	sample = importBED("nrsf.bed", "nrsf")<br />
+	saveAsBED(score_cutoff(flatten(range(sample)), 20))
+      </code>
+    </blockquote>
+  </P>
+  <P>
+    Another measure of an island is the "elevation" of the island - the maximum coverage of any of the bases in the island.
+    <blockquote>
+      <code>
+	-- Find all islands containing a position of at least 100x coverage<br />
+	saveAsBED( contains( flatten(range(sample)), clique(range(sample), 100)  ) )
+      </code>
+    </blockquote>
+  </P>
+  
+  <H2>Retrieving Regions of Interest</H2>
+  <P>
+    This example shows how to count the number of reads that overlap a particular region of interest.  It shows two valid approaches, with one more efficient than the other.<br /><br />
+    
+    <em>Method 1: Linear Pass</em>
+    <blockquote>
+      <code>
+	A = range("stat1")<br />
+	B = interval("chr1", 13863058, 13864058)<br />
+	print(count(overlaps(A, B)))<br />
+      </code><br />
+    </blockquote>
 
+    <em>Method 2: Augmented Interval Tree</em><br />
+    <blockquote>
+      <code>
+	A = range("stat1", "chr1", 13863058, 13864058)<br />
+	print(count(A))<br />
+      </code>
+    </blockquote>
+    Both give the same result.  The first method does a linear pass over the intervals on chromosome 1 and counts the number of intervals that overlap the region of interest.  Method two uses an interval tree to quickly locate the intervals that overlap the region.  The interval tree will outperform the linear pass when the number of intervals in the sample is large and when the number of overlaps is much less than the total intervals. 
+  </P>
+  
   <A name="authors"><H1>Authors</H1></A>
   <p>
     RIVALS is written by Justin Brown and Lina Dong.  For questions or feedback, please email run.intervals@gmail.com
