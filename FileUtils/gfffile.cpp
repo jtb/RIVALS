@@ -44,11 +44,16 @@ namespace rivals {
     if(!file_in.is_open()) return false;
     while(!file_in.eof()){
       getline(file_in, line);
-      if(line == "") continue;
-      
+      if(!checkLine(line)) continue;
+
       vector<string> fields;
       Tokenize(line, fields, " \t");
-      assert(fields.size() >= 9);
+      
+      if(fields.size() < 9) continue;
+      if(!checkChr(fields.at(0))) continue;
+      if(!checkPos(fields.at(3))) continue;
+      if(!checkPos(fields.at(4))) continue;
+
       chr = fields.at(0);// field 0
       Domain start;// field 3
       Domain stop;// field 4

@@ -25,6 +25,10 @@
 #include "interval.h"
 #include <string>
 
+bool checkLine(std::string & line);
+bool checkChr(std::string & chr);
+bool checkPos(std::string & s);
+
 namespace rivals {
   class GenomeFile {
   public:
