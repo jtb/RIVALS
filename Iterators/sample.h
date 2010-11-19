@@ -49,6 +49,10 @@ namespace rivals {
     ForwardCache<Interval> fvector;
     std::map<std::string, std::pair<Capacity, Capacity> > chrmap;
   };
+
+
+  std::string full_summary(const std::string & sample, Capacity & num_elements);
+  Capacity chr_summary(const std::string & sample, const std::string & chr, Domain & left, Domain & right);
 }
 
 #endif

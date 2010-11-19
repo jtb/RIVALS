@@ -87,6 +87,32 @@ static int countIntervals(lua_State * L){
   return 1;
 }
 
+static int fileSummary(lua_State * L){
+  if(lua_gettop(L) != 1){ luaL_error(L, "Expecting name of Rival file to file summary command"); }
+  std::string sample = luaL_checkstring(L, 1);
+  rivals::Capacity num_elements = 0;
+  std::string version = rivals::full_summary(sample, num_elements);
+  
+  lua_pushstring(L, version.c_str());
+  lua_pushnumber(L, num_elements);
+  return 2;
+}
+
+static int chromSummary(lua_State * L){
+  if(lua_gettop(L) != 2){ luaL_error(L, "Expecting 2 arguments to chromosome summary command"); }
+  std::string sample = luaL_checkstring(L, 1);
+  std::string chr = luaL_checkstring(L, 2);
+  rivals::Domain left = 0;
+  rivals::Domain right = 0;
+  rivals::Capacity len = 0;
+  len = rivals::chr_summary(sample, chr, left, right);
+ 
+  lua_pushnumber(L, len);
+  lua_pushnumber(L, left);
+  lua_pushnumber(L, right);
+  return 3;
+}
+
 static int range(lua_State * L){
   if(lua_gettop(L) != 1 && lua_gettop(L) != 2 && lua_gettop(L) != 4){ luaL_error(L, "Expecting 1, 2 or 4 arguments to range command"); }
   
@@ -252,7 +278,9 @@ int main(int argc, char *argv[]){
     lua_register(L, "saveAsRival", saveAsRival);
     lua_register(L, "count", countIntervals);
 
-    
+    lua_register(L, "file_summary", fileSummary);
+    lua_register(L, "chrom_summary", chromSummary);
+        
     if(luaL_dofile(L, argv[1])!=0) fprintf(stderr,"%s\n",lua_tostring(L,-1));
     lua_close(L);
   }

@@ -75,4 +75,39 @@ namespace rivals {
       on_chromosome = false;
     }
   }
+  
+  string full_summary(const string & sample, Capacity & num_elements){
+    off_t offset = 0;
+    string version;
+    readHeader(sample, version, offset, num_elements);
+    return version;
+  }
+
+  Capacity chr_summary(const string & sample, const string & chr, Domain & left, Domain & right){
+    Capacity start = 0;
+    Capacity stop = 0;
+    left = 0;
+    right = 0;
+
+    off_t offset = 0;
+    string version;
+    Capacity num_elements;
+    readHeader(sample, version, offset, num_elements);
+
+    ForwardCache<Interval> fvector(fileFromSample(sample));
+    map<string, pair<Capacity, Capacity> > chrmap;
+    readChrMap(sample, chrmap);
+    
+    if(getRanges(chr, chrmap, start, stop)){
+      Capacity index = 0;
+      fvector.setRange(offset, start, stop);
+      left = fvector.at(index).getStart();
+      if(getMidpoint(0, fvector.size(), index)){
+	right = fvector.at(index).getSubMax();
+      }
+    }
+    return (stop - start);
+  }
+
 }
+
