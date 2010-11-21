@@ -280,9 +280,25 @@ int main(int argc, char *argv[]){
 
     lua_register(L, "file_summary", fileSummary);
     lua_register(L, "chrom_summary", chromSummary);
-        
-    if(luaL_dofile(L, argv[1])!=0) fprintf(stderr,"%s\n",lua_tostring(L,-1));
-    lua_close(L);
+
+    if(argc > 1){
+      if(luaL_dofile(L, argv[1])!=0) fprintf(stderr,"%s\n",lua_tostring(L,-1));
+      lua_close(L);
+    }else{
+      printf(">");
+      char buff[256];
+      int error;
+      while (fgets(buff, sizeof(buff), stdin) != NULL) {
+	error = luaL_loadbuffer(L, buff, strlen(buff), "line") ||
+	  lua_pcall(L, 0, 0, 0);
+        if (error) {
+          fprintf(stderr, "%s\n", lua_tostring(L, -1));
+          lua_pop(L, 1);  /* pop error message from the stack */
+        }
+	printf(">");
+      }
+      lua_close(L);
+    }
   }
 
 #ifdef DEBUG
