@@ -176,6 +176,56 @@
     </tr>
   </table>
 
+  <H2>Runners</H2>
+  <UL>
+    <A name="alias"><H2>merge</H2></A>
+    <P>
+      <img src="Figures/merge.png" alt="FigFlatten" />
+    </P>
+  </UL>
+  <UL>
+    <A name="alias"><H2>flatten</H2></A>
+    <P>
+      <img src="Figures/flatten.png" alt="FigFlatten" />
+    </P>
+  </UL>
+  <UL>
+    <A name="alias"><H2>clique</H2></A>
+    <P>
+      <img src="Figures/clique.png" alt="FigFlatten" />
+    </P>
+  </UL>
+  <UL>
+    <A name="alias"><H2>overlaps</H2></A>
+    <P>
+      <img src="Figures/overlaps.png" alt="FigFlatten" />
+    </P>
+  </UL>
+  <UL>
+    <A name="alias"><H2>contained_in</H2></A>
+    <P>
+      <img src="Figures/contained_in.png" alt="FigFlatten" />
+    </P>
+  </UL>
+  <UL>
+    <A name="alias"><H2>contains</H2></A>
+    <P>
+      <img src="Figures/contains.png" alt="FigFlatten" />
+    </P>
+  </UL>
+  <UL>
+    <A name="alias"><H2>get_strand</H2></A>
+    <P>
+      <img src="Figures/get_strand.png" alt="FigFlatten" />
+    </P>
+  </UL>
+  <UL>
+    <A name="alias"><H2>set_strand</H2></A>
+    <P>
+      <img src="Figures/set_strand.png" alt="FigFlatten" />
+    </P>
+  </UL>
+
   <A name="examples"><H1>Examples</H1></A>
   <H2>Importing and Exporting data</H2>
   <P>
@@ -218,7 +268,7 @@
     <blockquote>
       <code>
 	-- Find all islands containing a position of at least 100x coverage<br />
-	saveAsBED( contains( flatten(range(sample)), clique(range(sample), 100)  ) )
+	saveAsBED( contains( flatten(range(sample)), clique(range(sample), 100)))
       </code>
     </blockquote>
   </P>

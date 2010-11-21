@@ -88,7 +88,7 @@ static int countIntervals(lua_State * L){
 }
 
 static int fileSummary(lua_State * L){
-  if(lua_gettop(L) != 1){ luaL_error(L, "Expecting name of Rival file to file summary command"); }
+  if(lua_gettop(L) != 1){ luaL_error(L, "Expecting name of Rival file to file_summary command"); }
   std::string sample = luaL_checkstring(L, 1);
   rivals::Capacity num_elements = 0;
   std::string version = rivals::full_summary(sample, num_elements);
@@ -99,7 +99,7 @@ static int fileSummary(lua_State * L){
 }
 
 static int chromSummary(lua_State * L){
-  if(lua_gettop(L) != 2){ luaL_error(L, "Expecting 2 arguments to chromosome summary command"); }
+  if(lua_gettop(L) != 2){ luaL_error(L, "Expecting sample name and chromosome name to chrom_summary command"); }
   std::string sample = luaL_checkstring(L, 1);
   std::string chr = luaL_checkstring(L, 2);
   rivals::Domain left = 0;
