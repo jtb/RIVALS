@@ -297,6 +297,11 @@
   </P>
   
   <H1>Data Storage</H1>
+  <P>
+    <img src="Figures/data_storage.png"  width="400" alt="DataStorage" />
+    <br />
+    Each interval contains a start position, stop position, strand, and maximum endpoint of subtree (used for range queries).  Strand is 2 bits and is placed within the start and stop fields.  The start, stop and max_end fields are (b-1) bits each (with 1 unused bit in the max_end field).  Each interval uses 3*b bits (by default, b=32 and the fields are signed integers).
+  </P>
 
   <H1>Data Traversal</H1>
   <P>
