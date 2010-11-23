@@ -296,6 +296,15 @@
     Both give the same result.  The first method does a linear pass over the intervals on chromosome 1 and counts the number of intervals that overlap the region of interest.  Method two uses an interval tree to quickly locate the intervals that overlap the region.  The interval tree will outperform the linear pass when the number of intervals in the sample is large and when the number of overlaps is much less than the total intervals. 
   </P>
   
+  <H1>Data Storage</H1>
+
+  <H1>Data Traversal</H1>
+  <P>
+    <img src="Figures/data_traversal.png"  width="500" alt="DataTraversal" />
+    <br />
+    A.  The largest endpoint of the subtree (12) is smaller than the start point (19) of the query interval and so does not have to be searched.  B.  The start point of the node interval (35) is larger than the endpoint (30) of the query interval so the subtree of the right child does not need to be searched.  C.  Intervals are arranged in contiguous blocks on disk by start position which allows for quickly and efficient in-order traversals. 
+  </P>
+  
   <A name="authors"><H1>Authors</H1></A>
   <p>
     RIVALS is written by Justin Brown and Lina Dong.  For questions or feedback, please email run.intervals@gmail.com
