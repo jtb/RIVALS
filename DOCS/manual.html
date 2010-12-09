@@ -34,7 +34,7 @@
     When a file is imported into a RIVAL sample, two files are created: &lt;base name&gt;.riv and &lt;base name&gt;.map, where "base name" is the name given to the sample during import.  The .riv file is a binary file containing the list of imported intervals sorted by start position.  The .map file is a human-readable text file listing the chromosome names and indices.  The .map file contains three tab-delimited fields: chromosome name, index of first interval on chromosome (inclusive), index of last interval on chromosome (exclusive).  These files should not be edited, with the sole exception of changing the names of the chromosomes, which is explained next. 
   </P>
   <UL>
-    <A name="alias"><H2>Changing Chromosome Names</H2></A>
+    <A name="change"><H2>Changing Chromosome Names</H2></A>
   <P>
     A chromosome can have various names depending on the naming convention (e.g. "1", "chr1", "NC_000001" for chromosome 1 of human).  When performing RIVAL tasks that combines multiple samples (such as merge or overlap), it is essential that the chromosome names agree (i.e. chr1:100 does not overlap NC_000001:100 since they have different names).  RIVALS will use the names given in the .map file.  You may change the names in these files so that the chromosome naming convention is consistent across all samples of interest, such as below.
 
@@ -83,12 +83,12 @@
       <th colspan="3">Importers: commands that convert text files into RIVAL files</th>
     </tr>
     <tr class="d0">
-      <td><code>string <A HREF="manual.html#install" target="manual">importBED</A></code></td>
+      <td><code>string <A HREF="manual.html#importBED" target="manual">importBED</A></code></td>
       <td>("from_bed", "to_rival" [,overwrite=false])</td>
       <td>Import BED file into RIVAL file<br />Only overwrites if optional argument is true</td>
     </tr>
     <tr class="d1">
-      <td><code>string <A HREF="manual.html#install" target="manual">importGFF</A></code></td>
+      <td><code>string <A HREF="manual.html#importGFF" target="manual">importGFF</A></code></td>
       <td>("from_gff", "to_rival" [,overwrite=false])</td>
       <td>Import GFF file into RIVAL file<br />Only overwrites if optional argument is true</td>
     </tr>
@@ -96,81 +96,81 @@
       <th colspan="3">Sources: commands that create an initial Runner</th>
     </tr>
     <tr class="d0">
-      <td><code>Runner <A HREF="manual.html#install" target="manual">interval</A></code></td><td>("chr", start, stop)</td>
+      <td><code>Runner <A HREF="manual.html#interval" target="manual">interval</A></code></td><td>("chr", start, stop)</td>
       <td>Create the interval chr:start-stop</td>
     </tr>
     <tr class="d1">
-      <td><code>Runner <A HREF="manual.html#install" target="manual">range</A></code></td><td>("from_rival")</td>
+      <td><code>Runner <A HREF="manual.html#range" target="manual">range</A></code></td><td>("from_rival")</td>
       <td>Return all intervals in RIVAL file</td>
     </tr>
     <tr class="d0">
-      <td><code>Runner <A HREF="manual.html#install" target="manual">range</A></code></td><td>("from_rival", "chr")</td>
+      <td><code>Runner <A HREF="manual.html#range" target="manual">range</A></code></td><td>("from_rival", "chr")</td>
       <td>Return all intervals in RIVAL file that are on chromosome chr</td>
     </tr>
     <tr class="d1">
-      <td><code>Runner <A HREF="manual.html#install" target="manual">range</A></code></td><td>("from_rival", "chr", start, stop)</td>
+      <td><code>Runner <A HREF="manual.html#range" target="manual">range</A></code></td><td>("from_rival", "chr", start, stop)</td>
       <td>Return all intervals in RIVAL file that overlap chr:start-stop</td>
     </tr>
     <tr class="d0">
-      <td><code>Runner <A HREF="manual.html#install" target="manual">range</A></code></td><td>("from_rival", "chr", point)</td>
+      <td><code>Runner <A HREF="manual.html#range" target="manual">range</A></code></td><td>("from_rival", "chr", point)</td>
       <td>Return all intervals in RIVAL file that overlap chr:point</td>
     </tr>
     <tr>
       <th colspan="3">Runners: commands that can be linked together</th>
     </tr>
     <tr class="d1">
-      <td><code>Runner <A HREF="manual.html#install" target="manual">merge</A></code></td><td>(Runner A, Runner B)</td>
+      <td><code>Runner <A HREF="manual.html#merge" target="manual">merge</A></code></td><td>(Runner A, Runner B)</td>
       <td>Merge intervals from A and B</td>
     </tr>
     <tr class="d0">
-      <td><code>Runner <A HREF="manual.html#install" target="manual">flatten</A></code></td><td>(Runner A)</td>
+      <td><code>Runner <A HREF="manual.html#flatten" target="manual">flatten</A></code></td><td>(Runner A)</td>
       <td>Join overlapping intervals from A</td>
     </tr>
     <tr class="d1">
-      <td><code>Runner <A HREF="manual.html#install" target="manual">clique</A></code></td><td>(Runner A, int minimum_overlap)</td>
+      <td><code>Runner <A HREF="manual.html#clique" target="manual">clique</A></code></td><td>(Runner A, int minimum_overlap)</td>
       <td>Report regions with at least minimum_overlap depth</td>
     </tr>
     <tr class="d0">
-      <td><code>Runner <A HREF="manual.html#install" target="manual">overlaps</A></code></td><td>(Runner A, Runner B)</td>
+      <td><code>Runner <A HREF="manual.html#overlaps" target="manual">overlaps</A></code></td><td>(Runner A, Runner B)</td>
       <td>Report intervals in A that overlap some interval in B</td>
     </tr>
     <tr class="d1">
-      <td><code>Runner <A HREF="manual.html#install" target="manual">contained_in</A></code></td><td>(Runner A, Runner B)</td>
+      <td><code>Runner <A HREF="manual.html#contained_in" target="manual">contained_in</A></code></td><td>(Runner A, Runner B)</td>
       <td>Report intervals in A that are contained in some interval in B</td>
     </tr>
     <tr class="d0">
-      <td><code>Runner <A HREF="manual.html#install" target="manual">contains</A></code></td><td>(Runner A, Runner B)</td>
+      <td><code>Runner <A HREF="manual.html#contains" target="manual">contains</A></code></td><td>(Runner A, Runner B)</td>
       <td>Report intervals in A that contain some interval in B</td>
     </tr>
     <tr class="d1">
-      <td><code>Runner <A HREF="manual.html#install" target="manual">get_strand</A></code></td><td>(Runner A, "strand")</td>
+      <td><code>Runner <A HREF="manual.html#get_strand" target="manual">get_strand</A></code></td><td>(Runner A, "strand")</td>
       <td>Report intervals on A that are from the specified strand: "+", "-", or "." (both)</td>
     </tr>
     <tr class="d0">
-      <td><code>Runner <A HREF="manual.html#install" target="manual">set_strand</A></code></td><td>(Runner A, "strand")</td>
+      <td><code>Runner <A HREF="manual.html#set_strand" target="manual">set_strand</A></code></td><td>(Runner A, "strand")</td>
       <td>Set intervals on A to the specified strand: "+", "-", or "." (both)</td>
     </tr>
     <tr class="d0">
-      <td><code>Runner <A HREF="manual.html#install" target="manual">score_cutoff</A></code></td><td>(Runner A, int threshold)</td>
+      <td><code>Runner <A HREF="manual.html#score_cutoff" target="manual">score_cutoff</A></code></td><td>(Runner A, int threshold)</td>
       <td>Reports all intervals with score greater than or equal to the threshold</td>
     </tr>
     <tr class="d1">
       <th colspan="3">Sinks: commands that summarize or output the list of intervals</th>
     </tr>
     <tr class="d0">
-      <td><code>string <A HREF="manual.html#install" target="manual">saveAsBED</A></code></td><td>(Runner A, "to_bed")</td>
+      <td><code>string <A HREF="manual.html#saveAsBED" target="manual">saveAsBED</A></code></td><td>(Runner A, "to_bed")</td>
       <td>Create a BED file from runner A</td>
     </tr>
     <tr class="d1">
-      <td><code>string <A HREF="manual.html#install" target="manual">saveAsBED</A></code></td><td>(Runner A)</td>
+      <td><code>string <A HREF="manual.html#saveAsBED" target="manual">saveAsBED</A></code></td><td>(Runner A)</td>
       <td>Print runner A in BED format to standard out</td>
     </tr>
     <tr class="d0">
-      <td><code>string <A HREF="manual.html#install" target="manual">saveAsRival</A></code></td><td>(Runner A, "to_rival")</td>
+      <td><code>string <A HREF="manual.html#saveAsRival" target="manual">saveAsRival</A></code></td><td>(Runner A, "to_rival")</td>
       <td>Create a RIVAL file from runner A</td>
     </tr>
     <tr class="d1">
-      <td><code>number <A HREF="manual.html#install" target="manual">countIntervals</A></code></td><td>(Runner A)</td>
+      <td><code>number <A HREF="manual.html#countIntervals" target="manual">countIntervals</A></code></td><td>(Runner A)</td>
       <td>Count the number of intervals in runner A</td>
     </tr>
   </table>
@@ -178,72 +178,86 @@
   <A name="import"><H2>Import</H2></A>
   A BED or GFF file first needs to be imported into the RIVALS file format.  The import will automatically detect if the file is sorted by genomic position and sort the intervals if needed.  This process might take a while if the file is large but will only need to be done once.  The sort is done on disk, which allows RIVALS to handle files larger than the size of available memory.
   <UL>
-    <A name="alias"><H2>importBED</H2></A>
+    <A name="importBED"><H2>importBED</H2></A>
   </UL>
   <UL>
-    <A name="alias"><H2>importGFF</H2></A>
-  </UL>
-
-  <A name="import"><H2>Sources</H2></A>
-  <UL>
-    <A name="alias"><H2>interval</H2></A>
-  </UL>
-  <UL>
-    <A name="alias"><H2>range</H2></A>
+    <A name="importGFF"><H2>importGFF</H2></A>
   </UL>
 
-  <H2>Runners</H2>
+  <A name="sources"><H2>Sources</H2></A>
   <UL>
-    <A name="alias"><H2>merge</H2></A>
+    <A name="interval"><H2>interval</H2></A>
+  </UL>
+  <UL>
+    <A name="range"><H2>range</H2></A>
+  </UL>
+
+  <A name="runners"><H2>Runners</H2>
+  <UL>
+    <A name="merge"><H2>merge</H2></A>
     <P>
       <img src="Figures/merge.png" alt="FigFlatten" />
     </P>
   </UL>
   <UL>
-    <A name="alias"><H2>flatten</H2></A>
+    <A name="flatten"><H2>flatten</H2></A>
     <P>
       <img src="Figures/flatten.png" alt="FigFlatten" />
     </P>
   </UL>
   <UL>
-    <A name="alias"><H2>clique</H2></A>
+    <A name="clique"><H2>clique</H2></A>
     <P>
       <img src="Figures/clique.png" alt="FigFlatten" />
     </P>
   </UL>
   <UL>
-    <A name="alias"><H2>overlaps</H2></A>
+    <A name="overlaps"><H2>overlaps</H2></A>
     <P>
       <img src="Figures/overlaps.png" alt="FigFlatten" />
     </P>
   </UL>
   <UL>
-    <A name="alias"><H2>contained_in</H2></A>
+    <A name="contained_in"><H2>contained_in</H2></A>
     <P>
       <img src="Figures/contained_in.png" alt="FigFlatten" />
     </P>
   </UL>
   <UL>
-    <A name="alias"><H2>contains</H2></A>
+    <A name="contains"><H2>contains</H2></A>
     <P>
       <img src="Figures/contains.png" alt="FigFlatten" />
     </P>
   </UL>
   <UL>
-    <A name="alias"><H2>get_strand</H2></A>
+    <A name="get_strand"><H2>get_strand</H2></A>
     <P>
       <img src="Figures/get_strand.png" alt="FigFlatten" />
     </P>
   </UL>
   <UL>
-    <A name="alias"><H2>set_strand</H2></A>
+    <A name="set_strand"><H2>set_strand</H2></A>
     <P>
       <img src="Figures/set_strand.png" alt="FigFlatten" />
     </P>
   </UL>
+  <UL>
+    <A name="score_cutoff"><H2>score_cutoff</H2></A>
+  </UL>
+
+  <A name="sinks"><H2>Sinks</H2></A>
+  <UL>
+    <A name="saveAsBED"><H2>saveAsBED</H2></A>
+  </UL>
+  <UL>
+    <A name="saveAsRival"><H2>saveAsRival</H2></A>
+  </UL>
+  <UL>
+    <A name="countIntervals"><H2>countIntervals</H2></A>
+  </UL>
 
   <A name="examples"><H1>Examples</H1></A>
-  <H2>Importing and Exporting data</H2>
+  <A name="importing"><H2>Importing and Exporting data</H2>
   <P>
     Assume the files "sample1.bed" and "sample2.gff" exist in your current directory.  Import them as "bed_sample" and "gff_sample" using the BED and GFF importers, respectively:
     <blockquote>
@@ -264,7 +278,7 @@
     </blockquote>
   </P>
   
-  <H2>Finding Enriched Islands</H2>
+  <A name="enriched"><H2>Finding Enriched Islands</H2>
   <P>
     An island is a set of alignments that span a block of contiguous bases.  If you view the genomic intervals as a graph - where each node is an alignment and edges are formed between overlapping alignments - then an island is a set of nodes where each node is connected to each other node by some path in the graph.  Below are some examples of finding islands with high read coverage.
   </P>
@@ -289,7 +303,7 @@
     </blockquote>
   </P>
   
-  <H2>Retrieving Regions of Interest</H2>
+  <A name="retrieving"><H2>Retrieving Regions of Interest</H2>
   <P>
     This example shows how to count the number of reads that overlap a particular region of interest.  It shows two valid approaches, with one more efficient than the other.<br /><br />
     
