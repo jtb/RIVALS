@@ -1,0 +1,21 @@
+RIVALS: Running Intervals
+=========================
+
+To compile:
+
+You will need to have CMake installed: http://www.cmake.org/  
+Download instructions for CMake are available at http://www.cmake.org/cmake/resources/software.html
+
+Type "cmake ." in this directory (assuming cmake is installed), and then run "make"
+
+To run:
+Go to the Exec directory and type
+
+./rivals scripts/test.lua
+
+You should get the following output:
+
+
+Additional example scripts are available in the scripts folder.
+
+For help, please email Justin at run.intervals@gmail.com

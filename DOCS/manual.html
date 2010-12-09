@@ -14,33 +14,32 @@
   <P>
     RIVALS is a software tool that allows for fast range queries and fast-in order traversals of genomic interval graphs.  Many common tasks that are performed on interval graphs can be performed efficiently when the intervals are sorted in order by start position.  Examples of these tasks include pooling different interval graphs into one, finding areas of maximal coverage, and locating islands of connected reads.  RIVALS contains "runners", which apply a certain function (such as merge, overlap, flatten) to a sorted interval graph and produce another sorted interval graph as the result.  By chaining these runners together, RIVALS can perform complex analyses on very large genomic datasets.
   </P>
-  <P>
-    Genomic data is stored in an augmented interval tree.  The data is stored on disk as a contiguous list of intervals sorted by start position, thus making efficient use of cache.  Each interval consists of a chromosome (or scaffold/contig), strand (+, -, both), start position (inclusive), and stop position (exclusive).  Searching the interval graph for a range of intervals can be done efficiently by viewing the interval list as a binary tree.  Each interval in the tree is augmented with the longest endpoint of its subtree.  By adding this extra field to the intervals, analysis can be done on either the entire dataset or over a particular range of interest.
-  </P>
-  <P>
-   [TODO: Write something about Lua?]
-  </P>
-  
+    
   <A name="install"><H1>Installation</H1></A>
+  Please see the INSTALL file included in the RIVALS package for instructions on how to install.
   <A name="quick"><H1>Quick Start</H1></A>
   <p>
-    Example scripts are included with the software to quickly get started using its features.  
+    Go to the Exec directory and type <br \>
+    <blockquote><code>./rivals scripts/test.lua</code></blockquote>
+    Other example scripts can be found in the scripts directory to help you quickly get started using the features of the software.
   </p>
 
   <A name="usage"><H1>Usage</H1></A>
-  <A name="import"><H1>Import</H1></A>
+  <p>
+    There are 3 main steps when running an analysis with RIVALS.  First, the data must be imported into a RIVALS file if it is not already in that format.  Currently, BED and GFF files are supported.  The data will be sorted and placed in the binary RIVALS format.  This will allow for fast access and traversal.  Second, RIVAL commands are chained together to perform some action on the intervals.  Third, the results are written to a BED file,  another RIVALS file, or to standard out.
+  </p>
 
   <A name="format"><H1>File Format</H1></A>
   <P>
-    When a file is imported into a RIVAL sample, two files are created: &lt;base name&gt;.riv and &lt;base name&gt;.map, where "base name" is the name given to the sample during import.  The .riv file is a binary file containing the list of imported intervals sorted by start position.  The .map file is a human-readable text file listing the chromosome names and indices.  The .map file contains three tab-delimited fields: chromosome name, position in list of chromosome start (inclusive), position in list of chromosome stop (exclusive).  These files should not be edited, with the sole exception of changing the names of the chromosomes, which is explained next. 
+    When a file is imported into a RIVAL sample, two files are created: &lt;base name&gt;.riv and &lt;base name&gt;.map, where "base name" is the name given to the sample during import.  The .riv file is a binary file containing the list of imported intervals sorted by start position.  The .map file is a human-readable text file listing the chromosome names and indices.  The .map file contains three tab-delimited fields: chromosome name, index of first interval on chromosome (inclusive), index of last interval on chromosome (exclusive).  These files should not be edited, with the sole exception of changing the names of the chromosomes, which is explained next. 
   </P>
   <UL>
     <A name="alias"><H2>Changing Chromosome Names</H2></A>
   <P>
-    A chromosome can have various names depending on the naming convention (e.g. "1", "chr1", "NC_000001" for chromosome 1 of human).  When performing RIVAL tasks that combines multiple samples (such as merge or overlap), it is essential that the chromosome names agree.  RIVALS will use the names given in the .map file.  You may change the names in these files so that the chromosome naming convention is consistent across all samples of interest, such as below.
+    A chromosome can have various names depending on the naming convention (e.g. "1", "chr1", "NC_000001" for chromosome 1 of human).  When performing RIVAL tasks that combines multiple samples (such as merge or overlap), it is essential that the chromosome names agree (i.e. chr1:100 does not overlap NC_000001:100 since they have different names).  RIVALS will use the names given in the .map file.  You may change the names in these files so that the chromosome naming convention is consistent across all samples of interest, such as below.
 
     <blockquote>
-      <em>Changing chromosome names in ncbi.map</em><br \>
+      <em>Changing chromosome names in ncbi.map</em><br \><br \>
       <table border="1">
 	<tr>
 	  <td>
@@ -76,7 +75,7 @@
   
   <A name="rivals"><H1>RIVAL Commands</H1></A>
   <P>
-    This section includes a comprehensive list of commands available in RIVALS.  The commands can roughly be divided into categories as follows: importers, sources, runners, and sinks.  Importers are functions that take a text file and converts it into a RIVALS file.  Currently, BED and GFF files are supported.  The source commands allow you to load interval graphs.  You can either create an interval manually or load an interval graph that you imported from a BED or GFF file.  Once loaded, you chain together the runners to perform analyses on the interval graph.  Finally, the sinks complete the analysis by outputting the results or reporting a summary of the results.  The following table gives an overview of the different commands.  Clicking on a command will give you a more details on what the command does.  Please visit the Examples section to see examples of the commands in action. 
+    This section includes a comprehensive list of commands available in RIVALS.  The commands can roughly be divided into categories as follows: importers, sources, runners, and sinks.  Importers are functions that take a text file and convert it into a RIVALS file.  The source commands will load the entire interval graph or the specified range of the interval graph.  Once loaded, you chain together the runners to perform analyses on the interval graph.  Finally, the sinks complete the analysis by outputting the results to a file or standard out.  The following table gives an overview of the different commands.  Clicking on a command will give you a more details on what the command does.  Please visit the Examples section to see examples of the commands in action. 
   </P>
 
   <table border="2">
@@ -175,6 +174,23 @@
       <td>Count the number of intervals in runner A</td>
     </tr>
   </table>
+
+  <A name="import"><H2>Import</H2></A>
+  A BED or GFF file first needs to be imported into the RIVALS file format.  The import will automatically detect if the file is sorted by genomic position and sort the intervals if needed.  This process might take a while if the file is large but will only need to be done once.  The sort is done on disk, which allows RIVALS to handle files larger than the size of available memory.
+  <UL>
+    <A name="alias"><H2>importBED</H2></A>
+  </UL>
+  <UL>
+    <A name="alias"><H2>importGFF</H2></A>
+  </UL>
+
+  <A name="import"><H2>Sources</H2></A>
+  <UL>
+    <A name="alias"><H2>interval</H2></A>
+  </UL>
+  <UL>
+    <A name="alias"><H2>range</H2></A>
+  </UL>
 
   <H2>Runners</H2>
   <UL>
@@ -298,6 +314,8 @@
   
   <H1>Data Storage</H1>
   <P>
+    Genomic data is stored in an augmented interval tree.  The data is stored on disk as a contiguous list of intervals sorted by start position, thus making efficient use of cache.  Each interval consists of a chromosome (or scaffold/contig), strand (+, -, both), start position (inclusive), and stop position (exclusive).<br />
+  
     <img src="Figures/data_storage.png"  width="400" alt="DataStorage" />
     <br />
     Each interval contains a start position, stop position, strand, and maximum endpoint of subtree (used for range queries).  Strand is 2 bits and is placed within the start and stop fields.  The start, stop and max_end fields are (b-1) bits each (with 1 unused bit in the max_end field).  Each interval uses 3*b bits (by default, b=32 and the fields are signed integers).
@@ -305,6 +323,8 @@
 
   <H1>Data Traversal</H1>
   <P>
+    Searching the interval graph for a range of intervals can be done efficiently by viewing the interval list as a binary tree.  Each interval in the tree is augmented with the longest endpoint of its subtree.  By adding this extra field to the intervals, analysis can be done on either the entire dataset or over a particular range of interest.<br />
+
     <img src="Figures/data_traversal.png"  width="500" alt="DataTraversal" />
     <br />
     A.  The largest endpoint of the subtree (12) is smaller than the start point (19) of the query interval and so does not have to be searched.  B.  The start point of the node interval (35) is larger than the endpoint (30) of the query interval so the subtree of the right child does not need to be searched.  C.  Intervals are arranged in contiguous blocks on disk by start position which allows for quickly and efficient in-order traversals. 
