@@ -22,10 +22,10 @@ int main(){
    */
 
   cout << "Importing Files..." << endl << endl;
-  string rival1 = "bed_test";
-  string rival2 = "gff_test";
-  importBED("Data/test.bed", rival1);
-  importGFF("Data/chrX.gff", rival2);
+  string rival1 = "Output/bed_test";
+  string rival2 = "Output/gff_test";
+  importBED("../Data/test.bed", rival1);
+  importGFF("../Data/chrX.gff", rival2);
 
   /* Source Iterator
      You can load all or parts of the RIVAL file using the "range" iterator
@@ -54,8 +54,8 @@ int main(){
   /** Examples **/
   //Save to BED file
   cout << "Example 1:" << endl;
-  saveAsBED("gff.bed", range(rival2));
-  cout << "Saved to gff.bed" << endl << endl;
+  saveAsBED("Output/gff.bed", range(rival2));
+  cout << "Saved to Output/gff.bed" << endl << endl;
 
   //Print to standard out all intervals that overlap chr8:28510032-31173640
   cout << "Example 2:" << endl;
@@ -64,9 +64,9 @@ int main(){
 
   //Do the same as above, but save to a Rival file.  Print out regions after changing strands to '-'
   cout << "Example 3:" << endl;
-  saveAsRival("output", range(rival1, "chr8", 28510032, 31173640));
+  saveAsRival("Output/output", range(rival1, "chr8", 28510032, 31173640));
   cout << "Saved to output.riv and output.map" << endl;
-  saveAsBED(set_strand(range("output"), MINUS));
+  saveAsBED(set_strand(range("Output/output"), MINUS));
   cout << endl;
 
   //These two methods should give identical results, but one is more efficent

@@ -21,7 +21,6 @@
   <p>
     Go to the Exec directory and type <br \>
     <blockquote><code>./rivals scripts/test.lua</code></blockquote>
-    Other example scripts can be found in the scripts directory to help you quickly get started using the features of the software.
   </p>
 
   <A name="usage"><H1>Usage</H1></A>
@@ -179,81 +178,133 @@
   A BED or GFF file first needs to be imported into the RIVALS file format.  The import will automatically detect if the file is sorted by genomic position and sort the intervals if needed.  This process might take a while if the file is large but will only need to be done once.  The sort is done on disk, which allows RIVALS to handle files larger than the size of available memory.
   <UL>
     <A name="importBED"><H2>importBED</H2></A>
+    <p>string importBED(string bed_file, string rivals_file, bool overwrite=false)</p>
+    <p>Create a RIVALS file named rivals_file from a BED file named bed_file.  By default, import will not overwrite the file if it already exists but can be overwritten by setting overwrite to true.</p>
+    <p>Example: sample1 = importBED("file.bed", "rival", true)</p>
   </UL>
   <UL>
     <A name="importGFF"><H2>importGFF</H2></A>
+    <p>string importGFF(string gff_file, string rivals_file, bool overwrite=false)</p>
+    <p>Create a RIVALS file named rivals_file from a GFF file named gff_file.  By default, import will not overwrite the file if it already exists but can be overwritten by setting overwrite to true.</p>
+    <p>Example: sample1 = importGFF("file.gff", "rival")</p>
   </UL>
 
   <A name="sources"><H2>Sources</H2></A>
   <UL>
     <A name="interval"><H2>interval</H2></A>
+    <p>Runner interval(string chr, Domain start, Domain stop)</p>
+    <p>Creates the interval chr:start-stop.</p>
+    <p>Example: runner = interval("chr1", 100, 500)</p>
   </UL>
   <UL>
     <A name="range"><H2>range</H2></A>
+    <p>(1) Runner range(string sample)</br>
+      (2) Runner range(string sample, string chr)</br>
+      (3) Runner range(string sample, string chr, Domain start, Domain stop)</br>
+      (4) Runner range(string sample, string chr, Domain point</br></p>
+    <p>Finds all intervals within the specified range, either returning all intervals in the sample (1), all intervals on a certain chromosome (2), all intervals overlapping a range (3), or all intervals overlapping a point (4) </p>
+    <p>Example: runner = range(sample1, "chr1", 100, 500)</p>
   </UL>
 
   <A name="runners"><H2>Runners</H2>
   <UL>
     <A name="merge"><H2>merge</H2></A>
+    <p>Runner merge(Runner A, Runner B)</p>
+    <p>Takes the union of intervals from A and B and places them into a combined interval graph.</p>
+    <p>Example: runner3 = merge(runner1, runner2)</p>
     <P>
       <img src="Figures/merge.png" alt="FigFlatten" />
     </P>
   </UL>
   <UL>
     <A name="flatten"><H2>flatten</H2></A>
+    <p>Runner flatten(Runner A)</p>
+    <p>Combines overlapping intervals into a single interval.  Forms the "shadow" of the intervals projected onto chromosome.</p>
+    <p>Example: runner2 = flatten(runner1)</p>
     <P>
       <img src="Figures/flatten.png" alt="FigFlatten" />
     </P>
   </UL>
   <UL>
     <A name="clique"><H2>clique</H2></A>
+    <p>Runner clique(Runner A, int minimum_overlap)</p>
+    <p>Returns all regions with at least minimum_overlap coverage in runner A.</p>
+    <p>Example: runner2 = clique(runner1, 10)</p>
     <P>
       <img src="Figures/clique.png" alt="FigFlatten" />
     </P>
   </UL>
   <UL>
     <A name="overlaps"><H2>overlaps</H2></A>
+    <p>Runner overlaps(Runner A, Runner B)</p>
+    <p>Returns all intervals in A that overlap at least one interval in B.</p>
+    <p>Example: runner3 = overlaps(runner1, runner2)</p>
     <P>
       <img src="Figures/overlaps.png" alt="FigFlatten" />
     </P>
   </UL>
   <UL>
     <A name="contained_in"><H2>contained_in</H2></A>
+    <p>Runner contained_in(Runner A, Runner B)</p>
+    <p>Returns all intervals in A that are contained in at least one interval in B.</p>
+    <p>Example: runner3 = contained_in(runner1, runner2)</p>
     <P>
       <img src="Figures/contained_in.png" alt="FigFlatten" />
     </P>
   </UL>
   <UL>
     <A name="contains"><H2>contains</H2></A>
+    <p>Runner contains(Runner A, Runner B)</p>
+    <p>Returns all intervals in A that contain at least one interval in B.</p>
+    <p>Example: runner3 = contains(runner1, runner2)</p>
     <P>
       <img src="Figures/contains.png" alt="FigFlatten" />
     </P>
   </UL>
   <UL>
     <A name="get_strand"><H2>get_strand</H2></A>
+    <p>Runner get_strand(Runner A, string strand)</p>
+    <p>Returns all intervals on the specified strand.  Strand can be "+" (positive strand), "-" (negative strand), or "." (both strands)</p>
+    <p>Example: runner_plus = get_strand(runner1, "+")</p>
     <P>
       <img src="Figures/get_strand.png" alt="FigFlatten" />
     </P>
   </UL>
   <UL>
     <A name="set_strand"><H2>set_strand</H2></A>
+    <p>Runner set_strand(Runner A, string strand)</p>
+    <p>Converts all intervals to be on the specified strand.  Strand can be "+" (positive strand), "-" (negative strand), or "." (both strands)</p>
+    <p>Example: runner2 = set_strand(runner1, "-")</p>
     <P>
       <img src="Figures/set_strand.png" alt="FigFlatten" />
     </P>
   </UL>
   <UL>
     <A name="score_cutoff"><H2>score_cutoff</H2></A>
+    <p>Runner score_cutoff(Runner A, int threshold)</p>
+    <p>Returns all intervals with a score at least as great as the threshold.</p>
+    <p>Example: intervals_at_least_10 = score_cutoff(runner1, 10)</p>
   </UL>
 
   <A name="sinks"><H2>Sinks</H2></A>
   <UL>
     <A name="saveAsBED"><H2>saveAsBED</H2></A>
+    <p>(1) string saveAsBED(Runner A, string bed_file)</br>
+    <p>(2) string saveAsBED(Runner A)</p>
+    <p>Creates a BED file from runner A and writes it to bed_file (1) or to standard out (2).</p>
+    <p>Example: saveAsBED(sample1)</p>
   </UL>
   <UL>
     <A name="saveAsRival"><H2>saveAsRival</H2></A>
+    <p>string saveAsRival(Runner A, string rival_file)</p>
+    <p>Creates a RIVAL file from runner A and writes it to rival_file.</p>
+    <p>Example: saveAsRival(sample1, "rival")</p>
   </UL>
   <UL>
     <A name="countIntervals"><H2>countIntervals</H2></A>
+    <p>int countIntervals(Runner A)</p>
+    <p>Returns a count of the number of intervals in runner A.</p>
+    <p>Example: total_intervals = countIntervals(sample1)</p>
   </UL>
 
   <A name="examples"><H1>Examples</H1></A>

@@ -15,7 +15,17 @@ Go to the Exec directory and type
 
 You should get the following output:
 
+Testing RIVALS
 
-Additional example scripts are available in the scripts folder.
+Output/bed_sample already exists. To overwrite, remove file or set overwrite to true.
 
-For help, please email Justin at run.intervals@gmail.com
+version: RIVAL001
+Number of intervals: 10001
+Chromosome chr1 of sample Output/bed_sample has 888 intervals, ranging from 1325303 (inclusive) to 247134924 (exclusive)
+
+
+Number of intervals that overlap chr8:28510032-31173640:       12
+
+===================================================================
+For additional help, please email Justin at run.intervals@gmail.com
+===================================================================
