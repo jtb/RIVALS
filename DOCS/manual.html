@@ -9,7 +9,6 @@
     }
   </style>
 
-
   <A name="intro"><H1>Introduction</H1></A>
   <P>
     RIVALS is a software tool that allows for fast range queries and fast-in order traversals of genomic interval graphs.  Many common tasks that are performed on interval graphs can be performed efficiently when the intervals are sorted in order by start position.  Examples of these tasks include pooling different interval graphs into one, finding areas of maximal coverage, and locating islands of connected reads.  RIVALS contains "runners", which apply a certain function (such as merge, overlap, flatten) to a sorted interval graph and produce another sorted interval graph as the result.  By chaining these runners together, RIVALS can perform complex analyses on very large genomic datasets.
@@ -258,7 +257,7 @@
     <p>Returns all intervals in A that contain at least one interval in B.</p>
     <p>Example: runner3 = contains(runner1, runner2)</p>
     <P>
-      <img src="Figures/contains.png" alt="FigFlatten" />
+      <img src="Figures/contains.png"  width="500" alt="FigFlatten" />
     </P>
   </UL>
   <UL>
