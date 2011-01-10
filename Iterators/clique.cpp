@@ -52,14 +52,14 @@ namespace rivals {
 	assert(count > 0);
 	endpoints.pop();
 	count--;
-	if(count < min_overlap && in_interval){
+	if(count < (int)min_overlap && in_interval){
 	  intv.setStop(end);
 	  intv.setStrand(BOTH);
 	  return true;
 	}
       }else{//start < end
 	count++;
-	if(count >= min_overlap){
+	if(count >= (int)min_overlap){
 	  if(!in_interval){
 	    in_interval = true;
 	    score = count;
