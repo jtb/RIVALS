@@ -29,6 +29,35 @@ int luaL_checkBool(lua_State * L, int arg){
   return lua_toboolean(L, arg);
 }
 
+static int help(lua_State * L){
+  printf("\nhelp\n\n");
+
+  printf("importBED\n");
+  printf("importGFF\n\n");
+
+  printf("interval\n");
+  printf("range\n\n");
+
+  printf("merge\n");
+  printf("flatten\n");
+  printf("clique\n");
+  printf("contained_in\n");
+  printf("contains\n");
+  printf("overlaps\n");
+  printf("get_strand\n");
+  printf("set_strand\n");
+  printf("score_cutoff\n\n");
+
+  printf("saveAsBED\n");
+  printf("saveAsRival\n");
+  printf("count\n\n");
+
+  printf("file_summary\n");
+  printf("chrom_summary\n\n");
+
+  return 0;
+}
+
 static int importBED(lua_State * L){
   if(lua_gettop(L) != 2 && lua_gettop(L) !=3){ luaL_error(L, "Expecting 2 or 3 arguments to importBED command"); }
   
@@ -258,6 +287,8 @@ int main(int argc, char *argv[]){
     lua_pushcfunction(L, runner_gc);
     lua_settable(L, -3);
 
+    lua_register(L, "help", help);
+
     lua_register(L, "importBED", importBED);
     lua_register(L, "importGFF", importGFF);
     
@@ -285,6 +316,11 @@ int main(int argc, char *argv[]){
       if(luaL_dofile(L, argv[1])!=0) fprintf(stderr,"%s\n",lua_tostring(L,-1));
       lua_close(L);
     }else{
+      
+      printf("RIVALS 1.0\n");
+      printf("written by Justin T. Brown 2010\n");
+      printf("Type \"help()\" for list of commands\n");
+
       printf(">");
       char buff[256];
       int error;
