@@ -177,12 +177,6 @@ void redraw(void)
   glutSwapBuffers();
 }
 
-/* Idle proc. Redisplays, if called. */
-void idle(void)
-{
-  //glutPostRedisplay();
-}
-
 /* Key press processing */
 void key(unsigned char c, int x, int y)
 {
@@ -244,7 +238,6 @@ int main(int argc, char **argv)
   glutDisplayFunc(redraw);
   glutKeyboardFunc(key);
   glutReshapeFunc(reshape);
-  glutIdleFunc(idle);
   glutSpecialFunc(processSpecialKeys);
 
   /* Init the GL state */
