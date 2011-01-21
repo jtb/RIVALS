@@ -70,7 +70,7 @@ void shift(double s){
     stop = start + dx*N;
   }else{
     //shift right as long as we don't go off right edge
-    if(start + dx*N <= right_end){
+    if(rivals::Domain(start + dx*N) <= right_end){
       start = start + dx*(N*s);
       stop = start + dx*N;
     }

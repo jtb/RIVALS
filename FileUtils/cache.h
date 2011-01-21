@@ -45,12 +45,12 @@ namespace rivals {
 	assert(index < this->num_elements);
 	if(index >= this->first_index && index < this->first_index + this->valid_size){
           return this->buffer[index - this->first_index];
-        }else{
-          batch(index);
-          return this->buffer[index - this->first_index];
         }
-      }
 
+	batch(index);
+	return this->buffer[index - this->first_index];
+      }
+      
       Capacity size() const { return num_elements; }
       
       void setRange(off_t offset, Capacity start, Capacity stop){
@@ -113,10 +113,10 @@ namespace rivals {
 	assert(index < this->num_elements);
 	if(index >= this->first_index && index < this->first_index + this->valid_size){
           return this->buffer[index - this->first_index];
-        }else{
-          batch(index);
-          return this->buffer[index - this->first_index];
         }
+	
+	batch(index);
+	return this->buffer[index - this->first_index];
       }
 
       void set(Capacity index, T element){
