@@ -98,9 +98,8 @@ void processSpecialKeys(int key, int x, int y) {
 }
 
 int plotCoverage(std::vector<int> & cov, size_t dx, std::string & sample){
-  assert(cov.size());
-  //std::cout << sample << "\t" << chr << "\t" << start << "\t" << stop << std::endl;
-  //std::cout << "gw is " << g_w << " and gh is " << g_h << std::endl;
+  if(!cov.size()) return 1;
+  
   std::auto_ptr<rivals::Node> samp = rivals::range(sample, chr, start, stop);
   rivals::Interval c;
   samp->iter->setChr(chr);
